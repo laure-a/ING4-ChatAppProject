@@ -1,6 +1,9 @@
 import {useState} from 'react';
 import './App.css';
 import MessageForm from './components/MessageForm/MessageForm.js';
+import Header from './components/Header/Header.js';
+import Footer from './components/Footer/Footer.js';
+
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 
@@ -11,11 +14,6 @@ const styles = {
     flexDirection: 'column',
     backgroundColor: '#565E71',
     padding: '50px',
-  },
-  footer: {
-    height: '30px',
-    backgroundColor: 'rgba(255,255,255,.3)',
-    flexShrink: 0,
   },
   main: {
     backgroundColor: '#373B44',
@@ -147,9 +145,7 @@ export default ({
   }
   return (
     <div className="App" css={styles.root}>
-      <header className="App-header" css={styles.header}>
-        <h1>header</h1>
-      </header>
+      <div> <Header/> </div>
       <main className="App-main" css={styles.main}>
         <div css={styles.channels}>
         </div>
@@ -179,9 +175,7 @@ export default ({
           <MessageForm addMessage={addMessage} />
         </div>
       </main>
-      <footer className="App-footer" style={styles.footer}>
-        footer
-      </footer>
+      <div> <Footer/> </div>
     </div>
   );
 }
