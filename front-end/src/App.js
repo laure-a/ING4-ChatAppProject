@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import './App.css';
-import MessageForm from './components/MessageForm.js';
+import MessageForm from './components/MessageForm/MessageForm.js';
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
 
@@ -11,17 +11,6 @@ const styles = {
     flexDirection: 'column',
     backgroundColor: '#565E71',
     padding: '50px',
-  },
-  header: {
-    height: '60px',
-    backgroundColor: 'rgba(255,255,255,.3)',
-    flexShrink: 0,
-  },
-  headerLogIn: {
-    backgroundColor: 'red',
-  },
-  headerLogOut: {
-    backgroundColor: 'blue',
   },
   footer: {
     height: '30px',
