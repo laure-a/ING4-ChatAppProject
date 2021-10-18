@@ -3,6 +3,7 @@ import './App.css';
 import MessageForm from './components/MessageForm/MessageForm.js';
 import Header from './components/Header/Header.js';
 import Footer from './components/Footer/Footer.js';
+import { DateTime } from "luxon"
 
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
@@ -53,6 +54,7 @@ const styles = {
   },
   
 }
+
 
 
 
@@ -143,6 +145,8 @@ export default ({
       message
     ])
   }
+
+
   return (
     <div className="App" css={styles.root}>
       <div> <Header/> </div>
@@ -158,7 +162,8 @@ export default ({
                   <p>
                     <span>{message.author}</span>
                     {' '}
-                    <span>{(new Date(message.creation)).toString()}</span>
+                    <span>{(new DateTime(message.creation).toLocaleString(DateTime.DATETIME_MED)).toString()}</span>
+ 
                   </p>
                   <div>
                     {
