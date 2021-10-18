@@ -1,0 +1,21 @@
+.Form {
+    borderTop: 2px solid #373B44;
+    padding: .5rem;
+    display: flex;
+  }
+
+.Content {
+    flex: 1 1 auto;
+    marginRight: .5rem;
+  }
+
+.Send {
+    backgroundColor: #D6DDEC;
+    padding: .2rem .5rem;
+    border: none;
+    :hover {
+      backgroundColor: #2A4B99;
+      cursor: pointer;
+      color: #fff;
+    }
+  }
