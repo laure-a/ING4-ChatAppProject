@@ -4,6 +4,7 @@ import MessageForm from "../MessageForm/MessageForm.js";
 import "./Channel.css";
 import Messages from "../Messages/Messages.js";
 
+
 const Channel = ({}) => {
     const [messages, setMessages] = useState([{
         author: 'sergei',
