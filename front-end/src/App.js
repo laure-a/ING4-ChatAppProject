@@ -13,7 +13,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#565E71',
-    padding: '50px',
+    marginTop: '0px',
+    //padding: '100px',
+    
   }
 }
 
@@ -22,7 +24,7 @@ export default ({}) => {
 
   return (
     <app className="App" css={styles.root}>
-      <div> <Header/> </div>
+       <div><Header/></div>
          <Main/> 
       <div> <Footer/> </div>
     </app>

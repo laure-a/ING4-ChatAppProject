@@ -1,9 +1,16 @@
 .Header {
-    height: 60px;
+    
+    height: 100%;
+    width: 100%;
+    margin-top: -20;
+
+    line-height: 100px;
+    
+    
     background-color: rgba(0, 0, 0, 0.822);
     flex-shrink: 0;
     text-align: center;
-    font-family: "Courier New", Courier, monospace;
+    font-family: "Times New Roman", Times, serif;
   }
   header-log-in {
     background-color: red;
