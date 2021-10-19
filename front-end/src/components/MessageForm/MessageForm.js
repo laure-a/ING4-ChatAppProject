@@ -9,7 +9,7 @@ const MessageForm = ({
       const data = new FormData(e.target)
       addMessage({
         content: data.get('content'),
-        author: 'david',
+        author: 'laure&thomas',
         creation: Date.now(),
       })
       e.target.elements.content.value = ''

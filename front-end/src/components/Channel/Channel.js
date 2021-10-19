@@ -1,10 +1,10 @@
 import React from "react";
+import {useState} from 'react';
 import MessageForm from "../MessageForm/MessageForm.js";
 import "./Channel.css";
 import Messages from "../Messages/Messages.js";
 
-const Channel = ({ messages, setMessages
-  }) => {/*
+const Channel = ({}) => {
     const [messages, setMessages] = useState([{
         author: 'sergei',
         creation: 1602831101929,
@@ -80,7 +80,7 @@ const Channel = ({ messages, setMessages
         Consider adding syntax highlight support with a library like
         [Prism](https://prismjs.com/).
         `,
-      }])*/
+      }])
 
       const addMessage = (message) => {
         setMessages([
@@ -91,7 +91,7 @@ const Channel = ({ messages, setMessages
 
     return (
         <channel className="Channel">
-        <div> <Messages/> </div>
+        <Messages channelname = {'My fake channel'} messages={messages}/>
        <MessageForm addMessage={addMessage} /> </channel>
     )
 }
