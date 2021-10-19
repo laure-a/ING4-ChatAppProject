@@ -2,7 +2,7 @@
 import './App.css';
 import Header from './components/Header/Header.js';
 import Footer from './components/Footer/Footer.js';
-import Messages from './components/Messages/Messages.js';
+import Channel from './components/Channel/Channel.js';
 
 
 /** @jsx jsx */
@@ -26,13 +26,7 @@ const styles = {
   channels: {
     minWidth: '200px',
   },
-  channel: {
-    height: '100%',
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'auto',
-  }
+  
   
 }
 
@@ -132,9 +126,7 @@ export default ({
       <main className="App-main" css={styles.main}>
         <div css={styles.channels}>
         </div>
-        <div css={styles.channel}>
-        <div> <Messages/> </div>
-        </div>
+        <div> <Channel/> </div>
       </main>
       <div> <Footer/> </div>
     </div>

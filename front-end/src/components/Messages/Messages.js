@@ -1,13 +1,11 @@
 import React from "react";
-import MessageForm from "../MessageForm/MessageForm.js";
 import { DateTime } from "luxon"
 import {useState} from 'react';
 import "./Messages.css";
 
-const Messages = ({channel = {
+const Messages = ({  channel = {
     name: 'Fake channel'
-  }
-  }) => {
+  }}) => {
     const [messages, setMessages] = useState([{
         author: 'sergei',
         creation: 1602831101929,
@@ -84,12 +82,7 @@ const Messages = ({channel = {
         [Prism](https://prismjs.com/).
         `,
       }])
-      const addMessage = (message) => {
-        setMessages([
-          ...messages,
-          message
-        ])
-      }
+     
     return (
         <messages className="Messages">
         <h1>Messages for {channel.name}</h1>
@@ -112,7 +105,7 @@ const Messages = ({channel = {
             </li>
           ))}
         </ul> 
-       <MessageForm addMessage={addMessage} /> </messages>
+       </messages>
     )
 }
 
