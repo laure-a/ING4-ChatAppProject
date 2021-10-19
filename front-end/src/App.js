@@ -1,9 +1,9 @@
-import {useState} from 'react';
+
 import './App.css';
-import MessageForm from './components/MessageForm/MessageForm.js';
 import Header from './components/Header/Header.js';
 import Footer from './components/Footer/Footer.js';
-import { DateTime } from "luxon"
+import Messages from './components/Messages/Messages.js';
+
 
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
@@ -21,7 +21,7 @@ const styles = {
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'row',
-    overflow: 'hidden',
+    overflow: 'auto',
   },
   channels: {
     minWidth: '200px',
@@ -31,27 +31,8 @@ const styles = {
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
-  },
-  messages: {
-    flex: '1 1 auto',
-    height: '100%',
     overflow: 'auto',
-    '& ul': {
-      'margin': 0,
-      'padding': 0,
-      'textIndent': 0,
-      'listStyleType': 0,
-    },
-  },
-  message: {
-    margin: '.2rem',
-    padding: '.2rem',
-    // backgroundColor: '#66728E',
-    ':hover': {
-      backgroundColor: 'rgba(255,255,255,.2)',
-    },
-  },
+  }
   
 }
 
@@ -59,10 +40,8 @@ const styles = {
 
 
 export default ({
-  channel = {
-    name: 'Fake channel'
-  }
-}) => {
+  
+}) => {/*
   const [messages, setMessages] = useState([{
     author: 'sergei',
     creation: 1602831101929,
@@ -144,7 +123,7 @@ export default ({
       ...messages,
       message
     ])
-  }
+  }*/
 
 
   return (
@@ -154,30 +133,7 @@ export default ({
         <div css={styles.channels}>
         </div>
         <div css={styles.channel}>
-          <div css={styles.messages}>
-            <h1>Messages for {channel.name}</h1>
-            <ul>
-              { messages.map( (message, i) => (
-                <li key={i} css={styles.message}>
-                  <p>
-                    <span>{message.author}</span>
-                    {' '}
-                    <span>{(new DateTime(message.creation).toLocaleString(DateTime.DATETIME_MED)).toString()}</span>
- 
-                  </p>
-                  <div>
-                    {
-                      message.content
-                      .split(/(\n +\n)/)
-                      .filter( el => el.trim() )
-                      .map( el => <p>{el}</p>)
-                    }
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <MessageForm addMessage={addMessage} />
+        <div> <Messages/> </div>
         </div>
       </main>
       <div> <Footer/> </div>

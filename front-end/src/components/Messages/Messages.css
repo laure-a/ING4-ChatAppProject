@@ -1,0 +1,21 @@
+.Messages {
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: auto;
+     ul {
+      margin: 0;
+      padding: 0;
+      text-indent: 0;
+      list-style-type: 0;
+    }
+  }
+
+.Message {
+    margin: .2rem;
+    padding: .2rem;
+    background-color: #66728E;
+  }
+
+  .Messsage:hover {
+    background-color: rgba(255,255,255,.2);
+  }
