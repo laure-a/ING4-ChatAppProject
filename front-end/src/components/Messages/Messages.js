@@ -2,6 +2,7 @@ import React from "react";
 import MessageForm from "../MessageForm/MessageForm.js";
 import { DateTime } from "luxon"
 import {useState} from 'react';
+import "./Messages.css";
 
 const Messages = ({channel = {
     name: 'Fake channel'

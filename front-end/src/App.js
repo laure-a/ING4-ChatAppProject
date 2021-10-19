@@ -21,7 +21,7 @@ const styles = {
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'row',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   channels: {
     minWidth: '200px',
