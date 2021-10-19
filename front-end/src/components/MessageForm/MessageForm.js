@@ -1,5 +1,6 @@
 import React from "react";
 import "./MessageForm.css";
+import image from "./img.png";
 
 const MessageForm = ({
     addMessage
@@ -17,9 +18,12 @@ const MessageForm = ({
     return (
       <form className="Form"  onSubmit={onSubmit}>
         <input type="input" name="content" className="Content" />
-        <input type="submit" value="Send" className="Send" />
+        
+        <button><img src={image} width="20px" height="20px"/></button>
       </form>
     )
   }
 
   export default MessageForm
+
+ /* <input type="submit" name="Send" className="Send" />*/

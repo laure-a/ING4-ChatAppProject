@@ -3,6 +3,9 @@
     flex: 1 1 auto;
     height: 100%;
     overflow: auto;
+    font-style: italic;
+    font-family: "Courier New", Courier, monospace;
+    color: rgb(255, 251, 0);
   }
 
   .Messages:ul {
@@ -13,11 +16,16 @@
   }
 
   .Message {
-    margin: .2rem;
+    font-style: normal;
+    font-family: "Courier New", Courier, monospace;
+    color: rgb(255, 255, 255);
+    margin: 15px;
     padding: .2rem;
-    /*background-color: #66728E;*/
+    border: 3px solid #e5ff00;
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
   }
 
   .Message:hover {
-    background-color: rgba(255,255,255,.2);
+    background-color: rgba(173, 223, 35, 0.2);
   }
