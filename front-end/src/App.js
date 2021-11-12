@@ -1,11 +1,12 @@
 
+/** @jsxImportSource @emotion/react */
+import {useState} from 'react'
 import './App.css';
-import Header from './components/Header/Header.js';
-import Footer from './components/Footer/Footer.js';
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-import Main from './components/Main/Main.js';
-
+// Local
+import Footer from './Footer'
+import Header from './Header'
+import Main from './Main'
+import Login from './Login'
 
 const styles = {
   root: {
@@ -13,20 +14,23 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#565E71',
-    marginTop: '0px',
-    //padding: '100px',
-    
-  }
+    padding: '50px',
+  },
 }
 
-
-export default ({}) => {
-
+export default function App() {
+  const [user, setUser] = useState(null)
+  const [drawerMobileVisible, setDrawerMobileVisible] = useState(false)
+  const drawerToggleListener = () => {
+    setDrawerMobileVisible(!drawerMobileVisible)
+  }
   return (
-    <app className="App" css={styles.root}>
-       <div><Header/></div>
-         <Main/> 
-      <div> <Footer/> </div>
-    </app>
-  )
+    <div className="App" css={styles.root}>
+      <Header drawerToggleListener={drawerToggleListener}/>
+      {
+        user ? <Main drawerMobileVisible={drawerMobileVisible} /> : <Login onUser={setUser} />
+      }
+      <Footer />
+    </div>
+  );
 }
