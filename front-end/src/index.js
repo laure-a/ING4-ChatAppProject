@@ -5,8 +5,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto'
+import { ContextProvider } from './Context';
 // Layout
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 const theme = createTheme({
   palette: {
@@ -16,11 +18,13 @@ const theme = createTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <CookiesProvider>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </CookiesProvider>
+    <ContextProvider>
+      <CookiesProvider>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </CookiesProvider>
+    </ContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

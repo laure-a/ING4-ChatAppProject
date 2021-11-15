@@ -1,13 +1,15 @@
 
 /** @jsxImportSource @emotion/react */
-import {useState} from 'react'
+import {useContext, useReducer, useState} from 'react'
 import './App.css';
 // Local
 import Footer from './Footer'
 import Header from './Header'
 import Main from './Main'
 import Login from './Login'
-i//mport MyProvider from './MyProvider'
+import {Context} from './Context'
+
+
 
 const styles = {
   root: {
@@ -20,20 +22,18 @@ const styles = {
 }
 
 export default function App() {
-  const [user, setUser] = useState(null)
+  const {user} = useContext(Context)
   const [drawerMobileVisible, setDrawerMobileVisible] = useState(false)
   const drawerToggleListener = () => {
     setDrawerMobileVisible(!drawerMobileVisible)
   }
   return (
-   // <MyProvider> //2 lignes à remettre pour wrap notre app dans le context
     <div className="App" css={styles.root}>
       <Header drawerToggleListener={drawerToggleListener}/>
       {
-        user ? <Main drawerMobileVisible={drawerMobileVisible} /> : <Login onUser={setUser} />
+        user ? <Main drawerMobileVisible={drawerMobileVisible} /> : <Login />
       }
       <Footer />
     </div>
-   // </MyProvider>
   );
 }

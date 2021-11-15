@@ -4,6 +4,8 @@
 import { useTheme } from '@mui/styles';
 import {IconButton} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Context } from './Context';
+import {useContext, useReducer, useState} from 'react'
 
 const useStyles = (theme) => ({
   header: {
@@ -27,6 +29,7 @@ const useStyles = (theme) => ({
 export default function Header({
   drawerToggleListener
 }) {
+  const {user} = useContext(Context)
   const styles = useStyles(useTheme())
   const handleDrawerToggle = (e) => {
     drawerToggleListener()
@@ -41,7 +44,7 @@ export default function Header({
       >
         <MenuIcon />
       </IconButton>
-      Header
+      Header : connected user is {user}
     </header>
   );
 }
