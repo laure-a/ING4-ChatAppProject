@@ -2,9 +2,9 @@
 Lab7 of Laure AUDOUY and Thomas POULAIN
 
 
-###How to run this app ? 
+### How to run this app ? 
 
-##Usage : CLI
+## Usage : CLI
 
 1. navigate to your dex directory
 
