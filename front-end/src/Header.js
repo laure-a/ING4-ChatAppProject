@@ -6,6 +6,7 @@ import { useTheme } from '@mui/styles';
 import { IconButton, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Context from './Context';
+import Gravatar from 'react-gravatar'
 
 const useStyles = (theme) => ({
   header: {
@@ -57,11 +58,12 @@ export default function Header({
           <span>
             {oauth.email}
             <Link onClick={onClickLogout}>logout</Link>
+            <Gravatar email={oauth.email} />
           </span>
         :
           <span>new user</span>
       }
-      
+
     </header>
   );
 }
