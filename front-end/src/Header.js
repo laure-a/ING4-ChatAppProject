@@ -44,25 +44,33 @@ export default function Header({
   }
   return (
     <header css={styles.header}>
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        onClick={drawerToggle}
-        css={styles.menu}
-      >
-        <MenuIcon />
-      </IconButton>
-      Header
-      {
-        oauth ?
-          <span>
-            {oauth.email}
-            <Link onClick={onClickLogout}>logout</Link>
-            <Gravatar email={oauth.email} />
-          </span>
-        :
-          <span>new user</span>
-      }
+    <IconButton
+    color="inherit"
+    aria-label="open drawer"
+    onClick={drawerToggle}
+    css={styles.menu}
+    >
+    <MenuIcon />
+    </IconButton>
+    Header
+    {
+      oauth ?
+      <span>
+      {oauth.email}
+      <Link onClick={onClickLogout}>logout</Link>
+      <Gravatar //gravatar image with default parameters override
+      email={oauth.email}
+      size={50}
+      rating="pg"
+      default="monsterid"
+      className="CustomAvatar-image"
+      style={{margin: '0px'}}
+      protocol="https://"
+      />
+      </span>
+      :
+      <span>new user</span>
+    }
 
     </header>
   );
