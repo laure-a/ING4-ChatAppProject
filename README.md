@@ -1,7 +1,9 @@
 
 # Chat application - final project
 
-*presentation, introduction, ...*
+This webtech project is a chat application that we called "BeTalky". It has been implemented using React.js, JavaScript...
+
+The user can securely create and manage channels, post/edit/delete their messages, invite friends, change their avatar or keep the default gravatar one, modify settings and so on.
 
 ## Usage
 
@@ -60,7 +62,10 @@
 
 ## Author
 
-*name, email, ...*
+* Laure Audouy : laure.audouy@edu.ece.fr
+* Thomas Poulain : thomas.poulain@edu.ece.fr
+
+*Group 3 - SI Inter*
 
 ## Tasks
 
@@ -80,7 +85,7 @@ Project management
 Application development
 
 * Welcome screens   
-  *place your graduation and comments*
+  *laure: en cours*
 * New channel creation   
   *place your graduation and comments*
 * Channel membership and access   
@@ -95,8 +100,15 @@ Application development
   *place your graduation and comments*
 * Account settings   
   *place your graduation and comments*
+  
 * Gravatar integration   
-  *place your graduation and comments*
+  For this task, we were allowed to use an existing react component. We chose this one: https://github.com/KyleAMathews/react-gravatar. To integrate it, we ran the following command in the "front-end" directory of our project:
+  ```
+  #adds react-gravatar in the dependencies of our package.json file
+  npm install react-gravatar
+  ```
+  In the code, the component was used in "header.js" line 61 to display the user's gravatar image or a default one if the connected user's email is not linked to a gravatar profile. 
+  
 * Avatar selection   
   *place your graduation and comments*
 * Personal custom avatar   
