@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import crypto from 'crypto'
 import qs from 'qs'
 import axios from 'axios'
+import Button from '@mui/material/Button';
 // Layout
 import { useTheme } from '@mui/styles';
 import { Link } from '@mui/material';
@@ -31,15 +32,20 @@ const sha256 = (buffer) => {
 const useStyles = (theme) => ({
   root: {
     flex: '1 1 auto',
-    background: theme.palette.background.default,
+    flexDirection: "column",
+    backgroundImage: `url(${process.env.PUBLIC_URL + '/ruche.png'})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    //background: theme.palette.background.default,
     display: 'flex',
-    justifyContent: 'center',
+    //justifyContent: 'center',
     alignItems: 'center',
     '& > div': {
       margin: `${theme.spacing(1)}`,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
+    backgroundColor: "#dddbdb",
     '& fieldset': {
       border: 'none',
       '& label': {
@@ -48,6 +54,15 @@ const useStyles = (theme) => ({
       },
     },
   },
+  h2: {
+    marginTop: "4vh",
+    marginBottom: 0,
+  },
+  h1: {
+    fontFamily: "'Courier New', Courier, monospace",
+    marginTop: "1vh",
+    color: "#E2B412",
+  }
 })
 
 const Redirect = ({
@@ -71,7 +86,21 @@ const Redirect = ({
   }
   return (
     <div css={styles.root}>
-      <Link onClick={redirect} color="secondary">Login with OpenID Connect and OAuth2</Link>
+    <h2 css={styles.h2}> Looking for a web app to chat with your friends ? </h2>
+    <h1 css={styles.h1}> BeeTalky is the place to bee. </h1>
+    <Button
+    sx={{
+      width: 80,
+      height: 40,
+      color: "white",
+      backgroundColor: "black",
+      borderColor: "white",
+      "&:hover": {
+        borderColor: "#730202",
+        background: "#730202"}
+    }}
+    variant="outlined"
+    onClick={redirect} >Login</Button>
     </div>
   )
 }
@@ -146,7 +175,7 @@ export default function Login({
   }
   const params = new URLSearchParams(window.location.search)
   const code = params.get('code')
-  // is there a code query parameters in the url 
+  // is there a code query parameters in the url
   if(!code){ // no: we are not being redirected from an oauth server
     if(!oauth){
       const codeVerifier = base64URLEncode(crypto.randomBytes(32))

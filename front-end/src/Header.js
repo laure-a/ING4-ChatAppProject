@@ -10,8 +10,9 @@ import Gravatar from 'react-gravatar'
 
 const useStyles = (theme) => ({
   header: {
+    height: 75,
     padding: theme.spacing(1),
-    backgroundColor: 'rgba(255,255,255,.3)',
+    backgroundColor: '#DDDBDB',
     flexShrink: 0,
   },
   headerLogIn: {
@@ -21,9 +22,42 @@ const useStyles = (theme) => ({
     backgroundColor: 'blue',
   },
   menu: {
+    backgroundColor: "blue",
     [theme.breakpoints.up('sm')]: {
       display: 'none !important',
     },
+  },
+  nameLogo: {
+    position: "absolute",
+    left: "8vw",
+    alignItems: "center",
+    width: 300,
+    backgroundColor: "green",
+    height: 60,
+  },
+  logo: {
+    fontFamily: "Courier",
+    backgroundColor: "red",
+    color: "black"
+  },
+  username: {
+    backgroundColor: "green",
+    position: "absolute",
+    top: 40,
+    right: "6vw",
+    fontSize: 16,
+    fontWeight: 500,
+    color: "#730202"
+  },
+  userGravatar: {
+    alignItems: "center",
+    backgroundColor: "blue",
+    position: "absolute",
+    top: 20,
+    right: "6vw",
+    fontSize: 16,
+    fontWeight: 500,
+    color: "#730202"
   }
 })
 
@@ -52,26 +86,30 @@ export default function Header({
     >
     <MenuIcon />
     </IconButton>
-    Header
-    {
+      <div css={styles.nameLogo}>
+        <h1 css={styles.logo}> BeeTalky </h1>
+      </div>
+
+      {
       oauth ?
-      <span>
-      {oauth.email}
-      <Link onClick={onClickLogout}>logout</Link>
-      <Gravatar //gravatar image with default parameters override
-      email={oauth.email}
-      size={50}
-      rating="pg"
-      default="monsterid"
-      className="CustomAvatar-image"
-      style={{margin: '0px'}}
-      protocol="https://"
-      />
+      <span css={styles.userGravatar}>
+        <div>
+          {oauth.email}
+        </div>
+        <Gravatar //gravatar image with default parameters override
+          email={oauth.email}
+          size={50}
+          rating="pg"
+          default="monsterid"
+          className="CustomAvatar-image"
+          style={{margin: '10px', borderRadius: '25px'}}
+          protocol="https://"
+        />
+        <Link onClick={onClickLogout}>logout</Link>
       </span>
       :
-      <span>new user</span>
-    }
-
+      <span css={styles.username}> new user</span> //à changer
+      }
     </header>
   );
 }
