@@ -11,9 +11,11 @@ import Gravatar from 'react-gravatar'
 const useStyles = (theme) => ({
   header: {
     height: 75,
+    display: "flex",
+    alignItems: "center",
     padding: theme.spacing(1),
     backgroundColor: '#DDDBDB',
-    flexShrink: 0,
+    flexShrink: 0
   },
   headerLogIn: {
     backgroundColor: 'red',
@@ -27,35 +29,21 @@ const useStyles = (theme) => ({
       display: 'none !important',
     },
   },
-  nameLogo: {
-    position: "absolute",
-    left: "8vw",
-    alignItems: "center",
-    width: 300,
-    backgroundColor: "green",
-    height: 60,
-  },
   logo: {
-    fontFamily: "Courier",
-    backgroundColor: "red",
-    color: "black"
-  },
-  username: {
-    backgroundColor: "green",
-    position: "absolute",
-    top: 40,
-    right: "6vw",
-    fontSize: 16,
-    fontWeight: 500,
-    color: "#730202"
-  },
-  userGravatar: {
+    marginLeft: "6vw",
     alignItems: "center",
-    backgroundColor: "blue",
-    position: "absolute",
-    top: 20,
-    right: "6vw",
-    fontSize: 16,
+    fontFamily: "Courier",
+    //backgroundColor: "red",
+    color: "black",
+    flexGrow: "1",
+    display: "block"
+  },
+  user: {
+    display: "inline-flex",
+    alignItems: "center",
+    //backgroundColor: "green",
+    marginRight: "6vw",
+    fontSize: 18,
     fontWeight: 500,
     color: "#730202"
   }
@@ -86,13 +74,10 @@ export default function Header({
     >
     <MenuIcon />
     </IconButton>
-      <div css={styles.nameLogo}>
-        <h1 css={styles.logo}> BeeTalky </h1>
-      </div>
-
+      <h1 css={styles.logo}> BeeTalky </h1>
       {
       oauth ?
-      <span css={styles.userGravatar}>
+      <span css={styles.user}>
         <div>
           {oauth.email}
         </div>
@@ -108,7 +93,7 @@ export default function Header({
         <Link onClick={onClickLogout}>logout</Link>
       </span>
       :
-      <span css={styles.username}> new user</span> //à changer
+      <span css={styles.user}> new user</span> 
       }
     </header>
   );
