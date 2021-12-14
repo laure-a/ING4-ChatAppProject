@@ -38,7 +38,7 @@ export default function Main() {
     // currentChannel, not yet used
     drawerVisible,
   } = useContext(Context)
-  
+
   const theme = useTheme()
   const styles = useStyles(theme)
   const alwaysOpen = useMediaQuery(theme.breakpoints.up('sm'))
@@ -46,7 +46,8 @@ export default function Main() {
   return (
     <main css={styles.root}>
       <Drawer
-        PaperProps={{ style: { position: 'relative' } }}
+        PaperProps={{
+          style: { backgroundColor: "#ffae00", position: 'relative' } }}
         BackdropProps={{ style: { position: 'relative' } }}
         ModalProps={{
           style: { position: 'relative' }

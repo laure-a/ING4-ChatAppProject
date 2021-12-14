@@ -6,7 +6,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: '40px',
-    backgroundColor: '#DDDBDB',
+    backgroundColor: 'white',
     fontSize: "14px",
     color: "black",
     display: "flex"

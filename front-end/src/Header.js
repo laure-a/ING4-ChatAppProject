@@ -15,7 +15,7 @@ const useStyles = (theme) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(1),
-    backgroundColor: '#DDDBDB',
+    backgroundColor: 'white',
     flexShrink: 0,
     minWidth: "600px"
   },
