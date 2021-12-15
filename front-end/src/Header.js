@@ -17,7 +17,8 @@ const useStyles = (theme) => ({
     padding: theme.spacing(1),
     backgroundColor: 'white',
     flexShrink: 0,
-    minWidth: "600px"
+    minWidth: "600px",
+    borderBottom: "1px solid #c1bdbd"
   },
   headerLogIn: {
     backgroundColor: 'red',

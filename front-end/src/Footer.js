@@ -9,7 +9,8 @@ const styles = {
     backgroundColor: 'white',
     fontSize: "14px",
     color: "black",
-    display: "flex"
+    display: "flex",
+    borderTop: "1px solid #c1bdbd"
   },
   logo: {
     width: 30,

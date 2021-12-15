@@ -12,9 +12,10 @@ const useStyles = (theme) => {
   const borderColor = theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)';
   return {
     form: {
-      borderTop: `2px solid ${borderColor}`,
+      borderTop: "2px solid #c1bdbd",
       padding: '.5rem',
       display: 'flex',
+      backgroundColor: "#b5b3b3",
     },
     content: {
       flex: '1 1 auto',
@@ -23,6 +24,7 @@ const useStyles = (theme) => {
       },
     },
     send: {
+      backgroundColor: "",
     },
   }
 }
@@ -38,7 +40,7 @@ export default function Form({
       `http://localhost:3001/channels/${channel.id}/messages`
     , {
       content: content,
-      author: 'david',
+      author: "me",
     })
     addMessage(message)
     setContent('')
@@ -61,7 +63,6 @@ export default function Form({
       <div>
         <Button
           variant="contained"
-          color="primary"
           css={styles.send}
           endIcon={<SendIcon />}
           onClick={onSubmit}
