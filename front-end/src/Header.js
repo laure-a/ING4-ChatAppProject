@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Context from './Context';
 import Gravatar from 'react-gravatar'
 import LogoutIcon from '@mui/icons-material/Logout';
-import { grey } from '@mui/material/colors';
+import { red, grey } from '@mui/material/colors';
 
 const useStyles = (theme) => ({
   header: {
@@ -58,7 +58,7 @@ const useStyles = (theme) => ({
     color: grey[700]
   },
   logout: {
-    color: 'black',
+    color: red[900],
 
   }
 })
@@ -108,7 +108,7 @@ export default function Header({
       <IconButton onClick={onClickLogout}
       size="large"
       css={styles.logout}
-      sx={{"&:hover": {background: "#cccccc"}}}>
+      sx={{"&:hover": {background: grey[200]}}}>
       <LogoutIcon fontSize="inherit"/>
       </IconButton>
       </span>
