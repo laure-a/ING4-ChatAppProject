@@ -43,17 +43,18 @@ const ColoredTextField = withStyles((theme) => ({
     "& label.Mui-focused": {
       color: red[800],
     },
-
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         borderColor: grey[400],
+      },
+       '& .MuiInputBase-input': {
+        color: grey[900],
       },
       "&.Mui-focused fieldset": {
         borderColor: red[800],
       },
       "&:hover fieldset":{
         borderColor: red[800],
-
       },
     },
   },
@@ -90,7 +91,7 @@ export default function Form({
         onChange={handleChange}
         variant="outlined"
         css={styles.content}
-      />
+        />
       <div>
         <Button
           sx={{
