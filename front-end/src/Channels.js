@@ -2,11 +2,21 @@
 /** @jsxImportSource @emotion/react */
 import {useContext, useEffect} from 'react';
 import axios from 'axios';
+import React from 'react';
 // Layout
 import {Link} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import {Button} from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import {IconButton} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { red } from '@mui/material/colors';
 // Local
 import Context from './Context'
 import {useNavigate} from 'react-router-dom'
@@ -15,15 +25,33 @@ const styles = {
   root: {
     '& a': {
       //padding: '0.2rem 0rem',
-      //whiteSpace: 'nowrap',
+      whiteSpace: 'nowrap',
     }
   },
-  channel_button: {
-  //  paddingLeft: "10px",
-  }
+  titleContainer: {
+    display: "flex",
+  },
+  title: {
+    color: "black",
+    paddingLeft: "15px",
+    display: "block"
+  },
+  addButton: {
+    marginLeft: 60,
+    color: red[800],
+  },
 }
 
 export default function Channels() {
+  // const [open, setOpen] = React.useState(false)
+  //
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // }
+  //
+  // const handleClose = () => {
+  //   setOpen(false);
+  // }
   const {
     oauth,
     channels, setChannels
@@ -65,7 +93,15 @@ export default function Channels() {
       > Welcome
       </Button>
       </Link>
-      <h3 css={{color: "black", paddingLeft: "15px"}}> Channels </h3>
+      <div css={styles.titleContainer}>
+      <h3 css={styles.title}> Channels </h3>
+      <IconButton
+      //onClick={handleClickOpen}>
+      //sx={{"&:hover": {background: "black"}}}
+      css={styles.addButton}>
+      <AddCircleIcon fontSize="inherit"/>
+      </IconButton>
+      </div>
       </li>
       { channels.map( (channel, i) => (
         <li key={i} css={styles.channel_button}>

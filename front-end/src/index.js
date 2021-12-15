@@ -15,6 +15,7 @@ import {
 const theme = createTheme({
   palette: {
     mode: 'dark',
+    mode: 'light',
   }
 });
 
