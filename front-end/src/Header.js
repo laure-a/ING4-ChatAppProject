@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Context from './Context';
 import Gravatar from 'react-gravatar'
 import LogoutIcon from '@mui/icons-material/Logout';
+import { grey } from '@mui/material/colors';
 
 const useStyles = (theme) => ({
   header: {
@@ -54,7 +55,7 @@ const useStyles = (theme) => ({
     marginRight: "1vw",
     fontSize: 18,
     fontWeight: 500,
-    color: "#730202"
+    color: grey[700]
   },
   logout: {
     color: 'black',
