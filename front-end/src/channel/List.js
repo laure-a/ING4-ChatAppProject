@@ -1,8 +1,20 @@
 
 /** @jsxImportSource @emotion/react */
-import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useContext, useEffect, useState} from 'react'
+
+import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useEffect, useContext, useState} from 'react'
+import axios from 'axios';
 // Layout
 import { useTheme } from '@mui/styles';
+import {Button, IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+import {red} from '@mui/material/colors';
 // Markdown
 import { unified } from 'unified'
 import markdown from 'remark-parse'
@@ -19,6 +31,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Button} from '@mui/material';
 // Time
+import Context from "../Context";
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import updateLocale from 'dayjs/plugin/updateLocale'
@@ -59,6 +72,9 @@ const useStyles = (theme) => ({
     top: 0,
     width: '50px',
   },
+  addButton: {
+    color: red[800],
+  },
   nameDiv: {
     display: "flex",
     alignItems: "center",
@@ -67,15 +83,44 @@ const useStyles = (theme) => ({
 
 export default forwardRef(({
   channel,
+  deleteMessage,
   messages,
   onScrollDown,
 }, ref) => {
   const [open, setOpen] = useState(false);
   const styles = useStyles(useTheme())
+  const { oauth } = useContext(Context);
+  const [open, setOpen] = useState(false);
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
   }));
+
+  const onSubmit = async (channelId,creation) => {
+     await axios.delete(
+      `http://localhost:3001/channels/${channel.id}/messages`
+    , {
+      params: {
+        channelId: `${channelId}`,
+        messageCreation: `${creation}`,
+      }
+    },{
+    headers: {
+      'Authorization': `Bearer ${oauth.access_token}`
+    }})
+    deleteMessage(creation)
+    handleClose()
+
+  }
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  
   const rootEl = useRef(null)
   const scrollEl = useRef(null)
   const scroll = () => {
@@ -104,6 +149,7 @@ export default forwardRef(({
     rootNode.addEventListener('scroll', handleScroll)
     return () => rootNode.removeEventListener('scroll', handleScroll)
   })
+
   return (
     <div css={styles.root} ref={rootEl}>
       <div css={styles.nameDiv}>
@@ -146,6 +192,23 @@ export default forwardRef(({
                   <span>{message.author}</span>
                   {' - '}
                   <span>{dayjs().calendar(message.creation)}</span>
+                  {'     '}
+                  {message.author === oauth.email && (
+                    <span>
+                      <IconButton 
+                       onClick={handleClickOpen}
+                       css={styles.addButton}>
+                      <DeleteIcon/>
+                    </IconButton> 
+                   </span>
+                  )}
+                          <Dialog open={open} onClose={handleClose}>
+       <DialogTitle>Are you sure that you want to delete this message ?</DialogTitle>
+       <DialogActions>
+           <Button onClick={handleClose}>Cancel</Button>
+           <Button onClick={()=>onSubmit(channel.id, message.creation)}>Yes</Button>
+       </DialogActions>
+         </Dialog>
                 </p>
                 <div dangerouslySetInnerHTML={{__html: value}}>
                 </div>
