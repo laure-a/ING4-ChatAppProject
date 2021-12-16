@@ -1,6 +1,6 @@
 
 /** @jsxImportSource @emotion/react */
-import {useContext, useEffect} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import React from 'react';
 // Layout
@@ -43,15 +43,13 @@ const styles = {
 }
 
 export default function Channels() {
-  // const [open, setOpen] = React.useState(false)
-  //
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // }
-  //
-  // const handleClose = () => {
-  //   setOpen(false);
-  // }
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const {
     oauth,
     channels, setChannels
@@ -95,12 +93,45 @@ export default function Channels() {
       </Link>
       <div css={styles.titleContainer}>
       <h3 css={styles.title}> Channels </h3>
+      <div>
       <IconButton
-      //onClick={handleClickOpen}>
-      //sx={{"&:hover": {background: "black"}}}
+      onClick={handleClickOpen}
       css={styles.addButton}>
       <AddCircleIcon fontSize="inherit"/>
       </IconButton>
+      <Dialog open={open} onClose={handleClose}>
+       <DialogTitle>Create a new channel</DialogTitle>
+       <DialogContent>
+         <DialogContentText>
+           To create a new channel, please enter its name and members.
+           Then send or cancel the form by clicking on the
+           corresponding button.
+         </DialogContentText>
+         <TextField
+           autoFocus
+           margin="dense"
+           id="name"
+           label="Channel name"
+           type="email"
+           fullWidth
+           variant="standard"
+         />
+         <TextField
+           autoFocus
+           margin="dense"
+           id="name"
+           label="Channel name"
+           type="email"
+           fullWidth
+           variant="standard"
+         />
+       </DialogContent>
+       <DialogActions>
+         <Button onClick={handleClose}>Cancel</Button>
+         <Button onClick={handleClose}>Send</Button>
+       </DialogActions>
+     </Dialog>
+     </div>
       </div>
       </li>
       { channels.map( (channel, i) => (
