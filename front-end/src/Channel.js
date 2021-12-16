@@ -46,6 +46,10 @@ export default function Channel() {
   const addMessage = (message) => {
     setMessages([...messages, message])
   }
+  const deleteMessage = (creation) =>{
+    const newMessages = messages.filter(message => message.creation !== creation)
+    setMessages(newMessages)
+  }
   useEffect( () => {
     const fetch = async () => {
       try{
@@ -81,6 +85,7 @@ export default function Channel() {
         messages={messages}
         onScrollDown={onScrollDown}
         ref={listRef}
+        deleteMessage={deleteMessage}
       />
       <Form addMessage={addMessage} channel={channel} />
       <Fab
