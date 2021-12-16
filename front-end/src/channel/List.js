@@ -8,6 +8,8 @@ import { unified } from 'unified'
 import markdown from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import html from 'rehype-stringify'
+import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
+import {IconButton} from '@mui/material';
 // Time
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
@@ -49,6 +51,10 @@ const useStyles = (theme) => ({
     top: 0,
     width: '50px',
   },
+  nameDiv: {
+    display: "flex",
+    alignItems: "center",
+  },
 })
 
 export default forwardRef(({
@@ -85,7 +91,12 @@ export default forwardRef(({
   })
   return (
     <div css={styles.root} ref={rootEl}>
+      <div css={styles.nameDiv}>
       <h1>Messages for {channel.name}</h1>
+      <IconButton css={{marginLeft: 15}}>
+      <PersonAddAltRoundedIcon fontSize="inherit"/>
+      </IconButton>
+      </div>
       <ul>
         { messages.map( (message, i) => {
             const {value} = unified()
