@@ -51,7 +51,7 @@ export default function Channel() {
       try{
         const {data: messages} = await axios.get(`http://localhost:3001/channels/${id}/messages`, {
           headers: {
-            // TODO: secure the request
+            'Authorization': `Bearer ${oauth.access_token}`
           }
         })
         setMessages(messages)
