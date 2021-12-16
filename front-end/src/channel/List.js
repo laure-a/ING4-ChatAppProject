@@ -1,6 +1,8 @@
 
 /** @jsxImportSource @emotion/react */
-import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useContext, useEffect, useState} from 'react'
+import {Fragment,forwardRef, useImperativeHandle, useLayoutEffect, useRef, useContext, useEffect, useState} from 'react'
+import Context from '../Context'
+import axios from 'axios';
 // Layout
 import { useTheme } from '@mui/styles';
 // Markdown
@@ -71,7 +73,29 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const [open, setOpen] = useState(false);
-  const styles = useStyles(useTheme())
+  const [usersList, setUsersList] = useState();
+  const oauth = useContext(Context)
+  const styles = useStyles(useTheme());
+  useEffect( () => {
+    const fetch = async () => {
+      try{
+        const {data: users} = await axios.get('http://localhost:3001/users', {
+          headers: {
+            'Authorization': `Bearer ${oauth.access_token}`
+          }
+        })
+        let tempo = []
+        for (let i=0; i<users.length; i++){
+          tempo.push({label: users[i].username})  
+        }
+        setUsersList(tempo)
+      }catch(err){
+        console.error(err)
+      }
+    }
+    fetch()
+  }, [])
+
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -122,7 +146,8 @@ export default forwardRef(({
         <Autocomplete
             disablePortal
             id="combo-box-users"
-            options={[{label: "hey"}, {label: "hey"}]}
+            //options={[{label: "hello"}, {label: "hey"}]}
+            options={usersList}
             sx={{ padding: 2, width: 300 }}
             renderInput={(params) => <TextField {...params} label="User email" />}
           />
