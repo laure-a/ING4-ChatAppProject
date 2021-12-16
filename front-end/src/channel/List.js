@@ -21,15 +21,7 @@ import markdown from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import html from 'rehype-stringify'
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import {IconButton} from '@mui/material';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import {Button} from '@mui/material';
 // Time
 import Context from "../Context";
 import dayjs from 'dayjs'
@@ -72,7 +64,7 @@ const useStyles = (theme) => ({
     top: 0,
     width: '50px',
   },
-  addButton: {
+  deleteButton: {
     color: red[800],
   },
   nameDiv: {
@@ -90,7 +82,7 @@ export default forwardRef(({
   const [open, setOpen] = useState(false);
   const styles = useStyles(useTheme())
   const { oauth } = useContext(Context);
-  const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -109,7 +101,7 @@ export default forwardRef(({
       'Authorization': `Bearer ${oauth.access_token}`
     }})
     deleteMessage(creation)
-    handleClose()
+    handleCloseDelete()
 
   }
   const handleClickOpen = () => {
@@ -118,6 +110,14 @@ export default forwardRef(({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
   };
 
   
@@ -128,12 +128,6 @@ export default forwardRef(({
   }
   // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
   const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   useLayoutEffect( () => {
     const rootNode = rootEl.current // react-hooks/exhaustive-deps
     const handleScroll = () => {
@@ -196,16 +190,16 @@ export default forwardRef(({
                   {message.author === oauth.email && (
                     <span>
                       <IconButton 
-                       onClick={handleClickOpen}
-                       css={styles.addButton}>
+                       onClick={handleClickOpenDelete}
+                       css={styles.deleteButton}>
                       <DeleteIcon/>
                     </IconButton> 
                    </span>
                   )}
-                          <Dialog open={open} onClose={handleClose}>
+                          <Dialog open={openDelete} onClose={handleCloseDelete}>
        <DialogTitle>Are you sure that you want to delete this message ?</DialogTitle>
        <DialogActions>
-           <Button onClick={handleClose}>Cancel</Button>
+           <Button onClick={handleCloseDelete}>Cancel</Button>
            <Button onClick={()=>onSubmit(channel.id, message.creation)}>Yes</Button>
        </DialogActions>
          </Dialog>
