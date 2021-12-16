@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useTheme } from '@mui/styles';
 import {Button, IconButton} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from '@mui/icons-material/Update';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import {red} from '@mui/material/colors';
+import {red, blue} from '@mui/material/colors';
 // Markdown
 import { unified } from 'unified'
 import markdown from 'remark-parse'
@@ -67,6 +68,9 @@ const useStyles = (theme) => ({
   deleteButton: {
     color: red[800],
   },
+  updateButton: {
+    color: blue[800],
+  },
   nameDiv: {
     display: "flex",
     alignItems: "center",
@@ -83,6 +87,7 @@ export default forwardRef(({
   const styles = useStyles(useTheme())
   const { oauth } = useContext(Context);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -118,6 +123,14 @@ export default forwardRef(({
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
+  };
+
+  const handleClickOpenUpdate = () => {
+    setOpenUpdate(true);
+  };
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
   };
 
   
@@ -194,6 +207,11 @@ export default forwardRef(({
                        css={styles.deleteButton}>
                       <DeleteIcon/>
                     </IconButton> 
+                    <IconButton
+                    onClick={handleClickOpenUpdate}
+                    css={styles.updateButton}>
+                    <UpdateIcon/> 
+                    </IconButton>
                    </span>
                   )}
                           <Dialog open={openDelete} onClose={handleCloseDelete}>
