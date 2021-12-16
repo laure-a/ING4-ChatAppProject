@@ -73,8 +73,8 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const [open, setOpen] = useState(false);
-  const [usersList, setUsersList] = useState();
-  const oauth = useContext(Context)
+  const [usersList, setUsersList] = useState([]);
+  const {oauth} = useContext(Context)
   const styles = useStyles(useTheme());
   useEffect( () => {
     const fetch = async () => {
@@ -86,7 +86,8 @@ export default forwardRef(({
         })
         let tempo = []
         for (let i=0; i<users.length; i++){
-          tempo.push({label: users[i].username})  
+          if(users[i].username!==oauth.email)
+            tempo.push({label: users[i].username})
         }
         setUsersList(tempo)
       }catch(err){
@@ -146,7 +147,6 @@ export default forwardRef(({
         <Autocomplete
             disablePortal
             id="combo-box-users"
-            //options={[{label: "hello"}, {label: "hey"}]}
             options={usersList}
             sx={{ padding: 2, width: 300 }}
             renderInput={(params) => <TextField {...params} label="User email" />}
