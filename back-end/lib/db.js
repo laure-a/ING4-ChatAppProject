@@ -78,6 +78,12 @@ module.exports = {
         })
       })
     },
+    delete: async(channelId, messageCreation)=>{
+      console.log("coucou");
+      if(!channelId) throw Error('Invalid channel')
+      if(!messageCreation) throw Error('No Message')
+      await db.del(`messages:${channelId}:${messageCreation}`)
+    },
   },
   users: {
     create: async (user) => {
