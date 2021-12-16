@@ -1,6 +1,6 @@
 
 /** @jsxImportSource @emotion/react */
-import {forwardRef, useImperativeHandle, useLayoutEffect, useRef} from 'react'
+import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useContext, useEffect, useState} from 'react'
 // Layout
 import { useTheme } from '@mui/styles';
 // Markdown
@@ -10,6 +10,14 @@ import remark2rehype from 'remark-rehype'
 import html from 'rehype-stringify'
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
 import {IconButton} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import {Button} from '@mui/material';
 // Time
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
@@ -62,6 +70,7 @@ export default forwardRef(({
   messages,
   onScrollDown,
 }, ref) => {
+  const [open, setOpen] = useState(false);
   const styles = useStyles(useTheme())
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
@@ -74,6 +83,12 @@ export default forwardRef(({
   }
   // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
   const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   useLayoutEffect( () => {
     const rootNode = rootEl.current // react-hooks/exhaustive-deps
     const handleScroll = () => {
@@ -93,9 +108,30 @@ export default forwardRef(({
     <div css={styles.root} ref={rootEl}>
       <div css={styles.nameDiv}>
       <h1>Messages for {channel.name}</h1>
-      <IconButton css={{marginLeft: 15}}>
-      <PersonAddAltRoundedIcon fontSize="inherit"/>
+      <IconButton
+      css={{marginLeft: 15}}
+      onClick={handleClickOpen}>
+      <PersonAddAltRoundedIcon/>
       </IconButton>
+      <Dialog open={open} onClose={handleClose}>
+       <DialogTitle>Create a new channel</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Add an existing user to this channel by searching its email
+        </DialogContentText>
+        <Autocomplete
+            disablePortal
+            id="combo-box-users"
+            // options={{}}
+            sx={{ padding: 2, width: 300 }}
+            renderInput={(params) => <TextField {...params} label="User email" />}
+          />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>Add</Button>
+      </DialogActions>
+    </Dialog>
       </div>
       <ul>
         { messages.map( (message, i) => {
