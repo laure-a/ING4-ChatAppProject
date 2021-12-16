@@ -114,7 +114,7 @@ export default forwardRef(({
       <PersonAddAltRoundedIcon/>
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
-       <DialogTitle>Create a new channel</DialogTitle>
+       <DialogTitle>Invite a user</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Add an existing user to this channel by searching its email
@@ -122,7 +122,7 @@ export default forwardRef(({
         <Autocomplete
             disablePortal
             id="combo-box-users"
-            // options={{}}
+            options={[{label: "hey"}, {label: "hey"}]}
             sx={{ padding: 2, width: 300 }}
             renderInput={(params) => <TextField {...params} label="User email" />}
           />
