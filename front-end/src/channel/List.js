@@ -1,14 +1,20 @@
 
 /** @jsxImportSource @emotion/react */
-import {forwardRef, useImperativeHandle, useLayoutEffect, useRef} from 'react'
+import {forwardRef, useImperativeHandle, useLayoutEffect, useRef, useContext, useState} from 'react'
 // Layout
 import { useTheme } from '@mui/styles';
+import {IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
+import {red} from '@mui/material/colors';
 // Markdown
 import { unified } from 'unified'
 import markdown from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import html from 'rehype-stringify'
 // Time
+import Context from "../Context";
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import updateLocale from 'dayjs/plugin/updateLocale'
@@ -49,7 +55,11 @@ const useStyles = (theme) => ({
     top: 0,
     width: '50px',
   },
+  addButton: {
+    color: red[800],
+  },
 })
+
 
 export default forwardRef(({
   channel,
@@ -57,10 +67,15 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const styles = useStyles(useTheme())
+  const { oauth } = useContext(Context);
+  const [open, setOpen] = useState(false);
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
   }));
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
   const rootEl = useRef(null)
   const scrollEl = useRef(null)
   const scroll = () => {
@@ -83,6 +98,7 @@ export default forwardRef(({
     rootNode.addEventListener('scroll', handleScroll)
     return () => rootNode.removeEventListener('scroll', handleScroll)
   })
+
   return (
     <div css={styles.root} ref={rootEl}>
       <h1>Messages for {channel.name}</h1>
@@ -99,6 +115,16 @@ export default forwardRef(({
                   <span>{message.author}</span>
                   {' - '}
                   <span>{dayjs().calendar(message.creation)}</span>
+                  {'     '}
+                  {message.author === oauth.email && (
+                    <span>
+                      <IconButton 
+                       onClick={handleClickOpen}
+                       css={styles.addButton}>
+                      <DeleteIcon fontSize="inherit"/>
+                    </IconButton>
+                   </span>
+                  )}
                 </p>
                 <div dangerouslySetInnerHTML={{__html: value}}>
                 </div>
