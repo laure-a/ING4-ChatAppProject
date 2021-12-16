@@ -30,6 +30,7 @@ const styles = {
   },
   titleContainer: {
     display: "flex",
+    alignItems: "center",
   },
   title: {
     color: "black",
@@ -43,17 +44,38 @@ const styles = {
 }
 
 export default function Channels() {
+  const {
+    oauth,
+    channels, setChannels
+  } = useContext(Context)
+  const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);
+  const onSubmit = async () => {
+    const {data: channel} = await axios.post(
+      `http://localhost:3001/channels`
+    , {
+      name: channelName,
+      owner: `${oauth.email}`,
+    },{
+    headers: {
+      'Authorization': `Bearer ${oauth.access_token}`
+    }})
+    addChannel(channel)
+    setChannelName('')
+    handleClose()
+  }
+  const handleChange = (e) => {
+    setChannelName(e.target.value)
+  }
+  const addChannel = (channel) => {
+    setChannels([...channels, channel])
+  }
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const {
-    oauth,
-    channels, setChannels
-  } = useContext(Context)
   const naviate = useNavigate();
   useEffect( () => {
     const fetch = async () => {
@@ -108,27 +130,26 @@ export default function Channels() {
            corresponding button.
          </DialogContentText>
          <TextField
-           autoFocus
            margin="dense"
            id="name"
            label="Channel name"
-           type="email"
            fullWidth
            variant="standard"
+           required
+           value={channelName}
+           onChange={handleChange}
          />
          <TextField
-           autoFocus
            margin="dense"
            id="name"
-           label="Channel name"
-           type="email"
+           label="Member name"
            fullWidth
            variant="standard"
          />
        </DialogContent>
        <DialogActions>
          <Button onClick={handleClose}>Cancel</Button>
-         <Button onClick={handleClose}>Send</Button>
+         <Button onClick={onSubmit}>Send</Button>
        </DialogActions>
      </Dialog>
      </div>
