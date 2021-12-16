@@ -73,6 +73,8 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [usersList, setUsersList] = useState([]);
   const {oauth} = useContext(Context)
   const styles = useStyles(useTheme());
@@ -145,12 +147,23 @@ export default forwardRef(({
           Add an existing user to this channel by searching its email
         </DialogContentText>
         <Autocomplete
-            disablePortal
-            id="combo-box-users"
-            options={usersList}
-            sx={{ padding: 2, width: 300 }}
-            renderInput={(params) => <TextField {...params} label="User email" />}
-          />
+        disablePortal
+        id="combo-box-users"
+        options={usersList}
+        sx={{ padding: 2, width: 300 }}
+        renderInput={(params) => <TextField {...params}
+        label="User email"/>}
+        // value={value}
+        // onChange={(event, newValue) => {
+        //   setValue(event.target.newValue);
+        //   console.log(value);
+        // }}
+        inputValue={inputValue}
+        onInputChange={(event, inputValue) => {
+          setInputValue(inputValue);
+          console.log(inputValue);
+        }}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
