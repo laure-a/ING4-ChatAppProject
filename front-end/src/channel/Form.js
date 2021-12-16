@@ -20,7 +20,6 @@ const useStyles = (theme) => {
       padding: '.5rem',
       display: 'flex',
       alignItems: "center",
-
       //backgroundColor: "#b5b3b3",
     },
     content: {
