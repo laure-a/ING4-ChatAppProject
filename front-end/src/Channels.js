@@ -51,11 +51,14 @@ export default function Channels() {
   const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);
   const onSubmit = async () => {
+    let tempoUsersList= []
+    tempoUsersList.push(oauth.email)
     const {data: channel} = await axios.post(
       `http://localhost:3001/channels`
     , {
       name: channelName,
       owner: `${oauth.email}`,
+      usersList: tempoUsersList,
     },{
     headers: {
       'Authorization': `Bearer ${oauth.access_token}`

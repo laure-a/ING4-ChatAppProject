@@ -72,9 +72,8 @@ export default forwardRef(({
   messages,
   onScrollDown,
 }, ref) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('');
-  const [inputValue, setInputValue] = useState('');
+  const [openAddUser, setOpenAddUser] = useState(false);
+  const [inputValueUser, setInputValueUser] = useState('');
   const [usersList, setUsersList] = useState([]);
   const {oauth} = useContext(Context)
   const styles = useStyles(useTheme());
@@ -99,6 +98,21 @@ export default forwardRef(({
     fetch()
   }, [])
 
+  const onSubmit = async () => {
+    channel.usersList.push(inputValueUser)
+    const {data: channelCurrent} = await axios.put(
+      `http://localhost:3001/channels/${channel.id}`
+    , {
+      name: channel.name,
+      owner: channel.owner,
+      usersList: channel.usersList
+    },{
+    headers: {
+      'Authorization': `Bearer ${oauth.access_token}`
+    }})
+    handleClose()
+  }
+
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -111,10 +125,10 @@ export default forwardRef(({
   // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
   const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenAddUser(true);
   };
   const handleClose = () => {
-    setOpen(false);
+    setOpenAddUser(false);
   };
   useLayoutEffect( () => {
     const rootNode = rootEl.current // react-hooks/exhaustive-deps
@@ -140,7 +154,7 @@ export default forwardRef(({
       onClick={handleClickOpen}>
       <PersonAddAltRoundedIcon/>
       </IconButton>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={openAddUser} onClose={handleClose}>
        <DialogTitle>Invite a user</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -153,21 +167,15 @@ export default forwardRef(({
         sx={{ padding: 2, width: 300 }}
         renderInput={(params) => <TextField {...params}
         label="User email"/>}
-        // value={value}
-        // onChange={(event, newValue) => {
-        //   setValue(event.target.newValue);
-        //   console.log(value);
-        // }}
-        inputValue={inputValue}
-        onInputChange={(event, inputValue) => {
-          setInputValue(inputValue);
-          console.log(inputValue);
+        inputValue={inputValueUser}
+        onInputChange={(event, inputValueUser) => {
+          setInputValueUser(inputValueUser);
         }}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Add</Button>
+        <Button onClick={onSubmit}>Add</Button>
       </DialogActions>
     </Dialog>
       </div>
