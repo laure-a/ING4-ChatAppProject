@@ -36,10 +36,10 @@ module.exports = {
         })
       })
     },
-    update: async (channel) => {
+    update: async (channel, id) => {
       if (!channel.name) throw Error("Invalid channel");
-      await db.put(`channels:${channel.id}`, JSON.stringify(channel));
-      return merge(channel, { id: channel.id });
+      await db.put(`channels:${id}`, JSON.stringify(channel));
+      return merge(channel, { id: id });
     },
     delete: (id, channel) => {
       const original = store.channels[id]

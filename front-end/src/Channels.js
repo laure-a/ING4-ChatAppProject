@@ -176,6 +176,7 @@ export default function Channels() {
           }}
             href={`/channels/${channel.id}`}
             onClick={ (e) => {
+              console.log(channel.usersList);
               e.preventDefault()
               naviate(`/channels/${channel.id}`)
             }}

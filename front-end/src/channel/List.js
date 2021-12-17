@@ -75,8 +75,9 @@ export default forwardRef(({
 }, ref) => {
   const [openAddUser, setOpenAddUser] = useState(false);
   const [inputValueUser, setInputValueUser] = useState([]);
-  const [usersList, setUsersList] = useState([]);
-  const {oauth} = useContext(Context)
+  const [usersListDb, setUsersListDb] = useState([]);
+  const [usersDisplay, setUsersDisplay] = useState([]);
+  const {oauth, channels, setChannels} = useContext(Context)
   const styles = useStyles(useTheme());
   useEffect( () => {
     const fetch = async () => {
@@ -87,11 +88,11 @@ export default forwardRef(({
           }
         })
         let tempo = []
+        let already = false
         for (let i=0; i<users.length; i++){
           if(users[i].username!==oauth.email)
-            tempo.push({label: users[i].username})
-        }
-        setUsersList(tempo)
+          tempo.push({label: users[i].username})}
+        setUsersListDb(tempo)
       }catch(err){
         console.error(err)
       }
@@ -99,13 +100,11 @@ export default forwardRef(({
     fetch()
   }, [])
 
-  const onSubmit = async () => {
+  const onSubmitUser = async () => {
     const tempo = inputValueUser.map(username => {
-      return username.label
-    } )
-   console.log(tempo)
-    const newList= channel.usersList.concat(tempo)
-    console.log(newList)
+     return username.label
+   } )
+   const newList= channel.usersList.concat(tempo)
     const {data: channelCurrent} = await axios.put(
       `http://localhost:3001/channels/${channel.id}`
     , {
@@ -116,13 +115,20 @@ export default forwardRef(({
     headers: {
       'Authorization': `Bearer ${oauth.access_token}`
     }})
-    updateChannel(newList)
+    updateChannels(channelCurrent)
     setInputValueUser([])
-    handleClose()
+    handleCloseUser()
   }
 
-  const updateChannel = (newList) => {
-    channel.usersList = newList
+  const updateChannels = (channelCurrent) => {
+    channel.usersList = channelCurrent.usersList
+    const newChannels = channels.map(current  => {
+      if(channelCurrent.id === current.id)
+        return channelCurrent
+      else
+        return current
+    })
+    setChannels(newChannels)
   }
 
   // Expose the `scroll` action
@@ -136,12 +142,20 @@ export default forwardRef(({
   }
   // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
   const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
-  const handleClickOpen = () => {
+
+  const handleClickOpenIcon = () => {
+    console.log(channel.usersList)
+    console.log(usersListDb)
+    const usersTempo = usersListDb.filter(username =>
+      !channel.usersList.some(userL => userL === username.label))
+    setUsersDisplay(usersTempo)
     setOpenAddUser(true);
   };
-  const handleClose = () => {
+  const handleCloseUser = () => {
+    setInputValueUser([])
     setOpenAddUser(false);
   };
+
   useLayoutEffect( () => {
     const rootNode = rootEl.current // react-hooks/exhaustive-deps
     const handleScroll = () => {
@@ -163,25 +177,25 @@ export default forwardRef(({
       <h1>Messages for {channel.name}</h1>
       <IconButton
       css={{marginLeft: 15}}
-      onClick={handleClickOpen}>
+      onClick={handleClickOpenIcon}>
       <PersonAddAltRoundedIcon/>
       </IconButton>
-      <Dialog open={openAddUser} onClose={handleClose}>
-       <DialogTitle>Invite a user</DialogTitle>
+      <Dialog open={openAddUser} onClose={handleCloseUser}>
+       <DialogTitle>Invite users</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Add an existing user to this channel by searching its email
+          Add existing users to this channel
         </DialogContentText>
-        <Stack spacing={3} sx={{ width: 500 }}>
+        <Stack spacing={3} sx={{ width: 350 }}>
         <Autocomplete
         multiple
         disablePortal
         id="combo-box-users"
-        options={usersList}
+        options={usersDisplay}
         sx={{ padding: 2, width: 300 }}
         renderInput={(params) => <TextField {...params}
         variant="standard"
-        label="User email"/>}
+        label="User emails"/>}
         value={inputValueUser}
         onChange={(event, inputValueUser) => {
           setInputValueUser(inputValueUser);
@@ -190,8 +204,8 @@ export default forwardRef(({
          </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={onSubmit}>Add</Button>
+        <Button onClick={handleCloseUser}>Cancel</Button>
+        <Button onClick={onSubmitUser}>Add</Button>
       </DialogActions>
     </Dialog>
       </div>
