@@ -17,6 +17,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {IconButton} from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { red } from '@mui/material/colors';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
 // Local
 import Context from './Context'
 import {useNavigate} from 'react-router-dom'
@@ -50,12 +52,41 @@ export default function Channels() {
   } = useContext(Context)
   const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);
+  const [usersListDb, setUsersListDb] = useState([]);
+  const [inputValueUser, setInputValueUser] = useState([]);
+
+  useEffect( () => {
+    const fetch = async () => {
+      try{
+        const {data: users} = await axios.get('http://localhost:3001/users', {
+          headers: {
+            'Authorization': `Bearer ${oauth.access_token}`
+          }
+        })
+        let tempo = []
+        let already = false
+        for (let i=0; i<users.length; i++){
+          if(users[i].username!==oauth.email)
+          tempo.push({label: users[i].username})}
+        setUsersListDb(tempo)
+      }catch(err){
+        console.error(err)
+      }
+    }
+    fetch()
+  }, [])
+
   const onSubmit = async () => {
+    const tempo = inputValueUser.map(username => {
+     return username.label
+   } )
+    const tempoUsersList= [oauth.email].concat(tempo)
     const {data: channel} = await axios.post(
       `http://localhost:3001/channels`
     , {
       name: channelName,
       owner: `${oauth.email}`,
+      usersList: tempoUsersList,
     },{
     headers: {
       'Authorization': `Bearer ${oauth.access_token}`
@@ -139,13 +170,22 @@ export default function Channels() {
            value={channelName}
            onChange={handleChange}
          />
-         <TextField
-           margin="dense"
-           id="name"
-           label="Member name"
-           fullWidth
-           variant="standard"
+         <Stack spacing={3} sx={{ width: 400 }}>
+         <Autocomplete
+         multiple
+         fullWidth
+         disablePortal
+         id="combo-box-users"
+         options={usersListDb}
+         renderInput={(params) => <TextField {...params}
+         variant="standard"
+         label="User emails"/>}
+         value={inputValueUser}
+         onChange={(event, inputValueUser) => {
+           setInputValueUser(inputValueUser);
+         }}
          />
+          </Stack>
        </DialogContent>
        <DialogActions>
          <Button onClick={handleClose}>Cancel</Button>
@@ -173,6 +213,7 @@ export default function Channels() {
           }}
             href={`/channels/${channel.id}`}
             onClick={ (e) => {
+              console.log(channel.usersList);
               e.preventDefault()
               naviate(`/channels/${channel.id}`)
             }}

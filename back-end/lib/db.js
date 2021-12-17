@@ -36,10 +36,10 @@ module.exports = {
         })
       })
     },
-    update: (id, channel) => {
-      const original = store.channels[id]
-      if(!original) throw Error('Unregistered channel id')
-      store.channels[id] = merge(original, channel)
+    update: async (channel, id) => {
+      if (!channel.name) throw Error("Invalid channel");
+      await db.put(`channels:${id}`, JSON.stringify(channel));
+      return merge(channel, { id: id });
     },
     delete: (id, channel) => {
       const original = store.channels[id]

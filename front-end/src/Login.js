@@ -149,8 +149,6 @@ const LoadToken = ({
         removeCookie('code_verifier')
         setOauth(data)
         try {
-          //est ce que ce user existe ?
-          //get list des users et la parcourir en comparant à l'email du truc connecté
           const {data: users} = await axios.get(`http://localhost:3001/users`, {
             headers: {
               'Authorization': `Bearer ${data.access_token}`
