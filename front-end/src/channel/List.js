@@ -80,6 +80,7 @@ const useStyles = (theme) => ({
 export default forwardRef(({
   channel,
   deleteMessage,
+  updateMessage,
   messages,
   onScrollDown,
 }, ref) => {
@@ -88,7 +89,8 @@ export default forwardRef(({
   const { oauth } = useContext(Context);
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [newMessage, setNewMessage] = useState('')
+  const [newMessage, setNewMessage] = useState('');
+  const [curCreation , setCurCreation] = useState('');
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -100,16 +102,32 @@ export default forwardRef(({
       , {
         params: {
           channelId: `${channelId}`,
-          messageCreation: `${creation}`,
+          messageCreation: curCreation,
         }
       }, {
       headers: {
         'Authorization': `Bearer ${oauth.access_token}`
       }
     })
-    deleteMessage(creation)
+    deleteMessage(curCreation)
     handleCloseDelete()
+  }
 
+  const onSubmitUpdate = async () => {
+   const {data: nmessage}= await axios.put(
+      `http://localhost:3001/channels/${channel.id}/messages`
+      , {
+          content: newMessage,
+          author: `${oauth.email}`,
+          channelId: channel.id,
+          creation: curCreation,
+        }, {
+      headers: {
+        'Authorization': `Bearer ${oauth.access_token}`
+      }
+    })
+    // updateMessage(nmessage, curCreation)
+    handleCloseUpdate()
   }
   const handleClickOpen = () => {
     setOpen(true);
@@ -125,10 +143,6 @@ export default forwardRef(({
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
-  };
-
-  const handleClickOpenUpdate = () => {
-    setOpenUpdate(true);
   };
 
   const handleCloseUpdate = () => {
@@ -208,12 +222,18 @@ export default forwardRef(({
                 {message.author === oauth.email && (
                   <span>
                     <IconButton
-                      onClick={handleClickOpenDelete}
+                      onClick={()=>{
+                        setOpenDelete(true);
+                      setCurCreation(message.creation)
+                      }}
                       css={styles.deleteButton}>
                       <DeleteIcon />
                     </IconButton>
                     <IconButton
-                      onClick={handleClickOpenUpdate}
+                      onClick= {()=>{
+                        setOpenUpdate(true);
+                      setCurCreation(message.creation)
+                      }}
                       css={styles.updateButton}>
                       <UpdateIcon />
                     </IconButton>
@@ -242,7 +262,7 @@ export default forwardRef(({
             />
             <DialogActions>
          <Button onClick={handleCloseUpdate}>Cancel</Button>
-         <Button onClick={onSubmit}>Edit</Button>
+         <Button onClick={onSubmitUpdate}>Edit</Button>
        </DialogActions>
           </DialogContent>
                 </Dialog>

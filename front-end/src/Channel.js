@@ -50,6 +50,13 @@ export default function Channel() {
     const newMessages = messages.filter(message => message.creation !== creation)
     setMessages(newMessages)
   }
+  const updateMessage = (newmessage, curCreation)=>{
+    console.log("coucou")
+    const index =messages.findIndex(message => message.creation===curCreation)
+    console.log(index)
+    const newMessages=messages.splice(index,1, newmessage)
+    setMessages(newMessages)
+  }
   useEffect( () => {
     const fetch = async () => {
       try{
@@ -86,6 +93,7 @@ export default function Channel() {
         onScrollDown={onScrollDown}
         ref={listRef}
         deleteMessage={deleteMessage}
+        updateMessage={updateMessage}
       />
       <Form addMessage={addMessage} channel={channel} />
       <Fab

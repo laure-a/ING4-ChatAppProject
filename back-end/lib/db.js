@@ -84,7 +84,16 @@ module.exports = {
       if(!messageCreation) throw Error('No Message')
       await db.del(`messages:${channelId}:${messageCreation}`)
     },
+  
+
+  update: async(channelId, message)=>{
+    if(!channelId) throw Error('Invalid channel')
+    if(!message.creation) throw Error('No message')
+    await db.put(`messages:${channelId}:${message.creation}`, JSON.stringify(message));
+    return merge(message, { channelId: channelId, creation: message.creation });
   },
+},
+
   users: {
     create: async (user) => {
       if(!user.username) throw Error('Invalid user')
