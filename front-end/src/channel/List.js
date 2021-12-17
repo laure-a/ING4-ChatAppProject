@@ -135,6 +135,9 @@ export default forwardRef(({
     setOpenUpdate(false);
   };
 
+  const handleChangeUpdate = (e) => {
+    setNewMessage(e.target.value)
+  }
 
   const rootEl = useRef(null)
   const scrollEl = useRef(null)
@@ -223,7 +226,7 @@ export default forwardRef(({
                     <Button onClick={() => onSubmit(channel.id, message.creation)}>Yes</Button>
                   </DialogActions>
                 </Dialog>
-                <Dialog open={openUpdate} onClose={handleCloseUpdate}>
+                <Dialog open={openUpdate} onClose={handleCloseUpdate} fullWidth={true} maxWidth='md'>
                   <DialogTitle> Enter your new message</DialogTitle>
                   <DialogContent>
             <TextField
@@ -232,9 +235,10 @@ export default forwardRef(({
               id="newMessage"
               label="New message:"
               type="text"
-              fullWidth
+              fullWidth={true}
+              width='250px'
               value={newMessage}
-              // onChange={(e) => setNewMessage(e.target.value)}
+              onChange={handleChangeUpdate}
               required
             />
           </DialogContent>
