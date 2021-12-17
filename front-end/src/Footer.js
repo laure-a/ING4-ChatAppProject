@@ -23,7 +23,7 @@ export default function Footer() {
   return (
     <footer style={styles.footer}>
       <img css={styles.logo} src="/logo_color.png" alt="LogoColor"/>
-      <f4> Made by Laure Audouy and Thomas Poulain, webtech, 2021 </f4>
+      <span> Made by Laure Audouy and Thomas Poulain, webtech, 2021 </span>
     </footer>
-  );
+  )
 }
