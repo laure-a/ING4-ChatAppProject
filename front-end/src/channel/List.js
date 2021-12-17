@@ -235,12 +235,15 @@ export default forwardRef(({
               id="newMessage"
               label="New message:"
               type="text"
-              fullWidth={true}
-              width='250px'
+              fullWidth
               value={newMessage}
               onChange={handleChangeUpdate}
               required
             />
+            <DialogActions>
+         <Button onClick={handleCloseUpdate}>Cancel</Button>
+         <Button onClick={onSubmit}>Edit</Button>
+       </DialogActions>
           </DialogContent>
                 </Dialog>
               </p>
