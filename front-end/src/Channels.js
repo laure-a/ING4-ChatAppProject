@@ -115,14 +115,16 @@ export default function Channels() {
           headers: {
             'Authorization': `Bearer ${oauth.access_token}`
           }
-        })
-        setChannels(channels)
-      }catch(err){
-        console.error(err)
-      }
-    }
-    fetch()
-  }, [oauth, setChannels])
+          ,
+          params: {
+            connectedUser: `${oauth.email}` }})
+            setChannels(channels)
+          }catch(err){
+            console.error(err)
+          }
+        }
+        fetch()
+      }, [oauth, setChannels])
   return (
     <ul css={styles.root}>
       <li css={styles.channel}>
