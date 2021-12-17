@@ -37,6 +37,7 @@ app.get('/channels/:id', async (req, res) => {
 })
 
 app.put('/channels/:id', async (req, res) => {
+  console.log(req.body)
   const channel = await db.channels.update(req.body)
   res.json(channel)
 })

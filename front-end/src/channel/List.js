@@ -20,6 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Button} from '@mui/material';
+import Stack from '@mui/material/Stack';
 // Time
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
@@ -73,7 +74,7 @@ export default forwardRef(({
   onScrollDown,
 }, ref) => {
   const [openAddUser, setOpenAddUser] = useState(false);
-  const [inputValueUser, setInputValueUser] = useState('');
+  const [inputValueUser, setInputValueUser] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const {oauth} = useContext(Context)
   const styles = useStyles(useTheme());
@@ -99,18 +100,29 @@ export default forwardRef(({
   }, [])
 
   const onSubmit = async () => {
-    channel.usersList.push(inputValueUser)
+    const tempo = inputValueUser.map(username => {
+      return username.label
+    } )
+   console.log(tempo)
+    const newList= channel.usersList.concat(tempo)
+    console.log(newList)
     const {data: channelCurrent} = await axios.put(
       `http://localhost:3001/channels/${channel.id}`
     , {
       name: channel.name,
       owner: channel.owner,
-      usersList: channel.usersList
+      usersList: newList
     },{
     headers: {
       'Authorization': `Bearer ${oauth.access_token}`
     }})
+    updateChannel(newList)
+    setInputValueUser([])
     handleClose()
+  }
+
+  const updateChannel = (newList) => {
+    channel.usersList = newList
   }
 
   // Expose the `scroll` action
@@ -160,18 +172,22 @@ export default forwardRef(({
         <DialogContentText>
           Add an existing user to this channel by searching its email
         </DialogContentText>
+        <Stack spacing={3} sx={{ width: 500 }}>
         <Autocomplete
+        multiple
         disablePortal
         id="combo-box-users"
         options={usersList}
         sx={{ padding: 2, width: 300 }}
         renderInput={(params) => <TextField {...params}
+        variant="standard"
         label="User email"/>}
-        inputValue={inputValueUser}
-        onInputChange={(event, inputValueUser) => {
+        value={inputValueUser}
+        onChange={(event, inputValueUser) => {
           setInputValueUser(inputValueUser);
         }}
         />
+         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
