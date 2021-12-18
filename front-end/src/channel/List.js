@@ -89,7 +89,7 @@ export default forwardRef(({
   const { oauth } = useContext(Context);
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState(null);
   const [curCreation , setCurCreation] = useState('');
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
@@ -126,7 +126,7 @@ export default forwardRef(({
         'Authorization': `Bearer ${oauth.access_token}`
       }
     })
-    // updateMessage(nmessage, curCreation)
+   updateMessage(nmessage, curCreation)
     handleCloseUpdate()
   }
   const handleClickOpen = () => {
@@ -137,9 +137,6 @@ export default forwardRef(({
     setOpen(false);
   };
 
-  const handleClickOpenDelete = () => {
-    setOpenDelete(true);
-  };
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
@@ -147,6 +144,7 @@ export default forwardRef(({
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
+    setNewMessage(null);
   };
 
   const handleChangeUpdate = (e) => {
