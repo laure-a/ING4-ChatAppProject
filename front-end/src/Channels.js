@@ -48,7 +48,8 @@ const styles = {
 export default function Channels() {
   const {
     oauth,
-    channels, setChannels
+    channels, setChannels,
+    currentUser, setCurrentUser
   } = useContext(Context)
   const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);
@@ -103,6 +104,7 @@ export default function Channels() {
   }
   const handleClickOpen = () => {
     setOpen(true);
+    console.log(currentUser)
   };
   const handleClose = () => {
     setOpen(false);
