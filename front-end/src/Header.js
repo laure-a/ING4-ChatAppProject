@@ -1,9 +1,9 @@
 
 /** @jsxImportSource @emotion/react */
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 // Layout
 import { useTheme } from '@mui/styles';
-import { IconButton, Link } from '@mui/material';
+import { Button, IconButton, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Context from './Context';
 import Gravatar from 'react-gravatar'
@@ -78,6 +78,7 @@ export default function Header({
     e.stopPropagation()
     setOauth(null)
   }
+  const [openSelection, setOpenSelection] = useState(false);
   return (
     <header css={styles.header}>
     <IconButton
@@ -105,6 +106,12 @@ export default function Header({
       style={{margin: '10px', borderRadius: '25px'}}
       protocol="https://"
       />
+     <Button
+                      onClick={()=>{
+                        setOpenSelection(true);
+                      }}  >
+                        Choose Avatar
+                    </Button>
       <IconButton onClick={onClickLogout}
       size="large"
       css={styles.logout}

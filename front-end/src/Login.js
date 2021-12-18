@@ -179,9 +179,13 @@ const LoadToken = ({
     }
     fetch()
   })
-  return (
-    <div css={styles.root}>Loading tokens</div>
-  )
+   return (
+    
+     <span>
+       <div css={styles.root}>Loading tokens</div> 
+     </span>
+    
+   )
 }
 
 export default function Login({
@@ -206,16 +210,18 @@ export default function Login({
       const codeVerifier = base64URLEncode(crypto.randomBytes(32))
       console.log('set code_verifier', codeVerifier)
       setCookie('code_verifier', codeVerifier)
+      console.log("shohabibi")
       return (
         <Redirect codeVerifier={codeVerifier} config={config} css={styles.root} />
       )
     }else{ // yes: user is already logged in, great, is is working
+      console.log("thyvia mon bb")
       return (
         <Tokens oauth={oauth} css={styles.root} />
       )
     }
   }else{ // yes: we are coming from an oauth server
-    console.log('get code_verifier', cookies.code_verifier)
+    console.log("coucouuuuu")
     return (
       <LoadToken
         code={code}
