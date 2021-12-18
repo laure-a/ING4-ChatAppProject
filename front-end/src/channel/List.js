@@ -1,7 +1,7 @@
 
 /** @jsxImportSource @emotion/react */
-
-import { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useEffect, useContext, useState } from 'react'
+import {Fragment,forwardRef, useImperativeHandle, useLayoutEffect, useRef, useContext, useEffect, useState} from 'react'
+import Context from '../Context'
 import axios from 'axios';
 // Layout
 import { useTheme } from '@mui/styles';
@@ -14,7 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import Stack from '@mui/material/Stack';
 import { red, blue } from '@mui/material/colors';
 // Markdown
 import { unified } from 'unified'
@@ -24,7 +24,6 @@ import html from 'rehype-stringify'
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
 import Autocomplete from '@mui/material/Autocomplete';
 // Time
-import Context from "../Context";
 import dayjs from 'dayjs'
 import calendar from 'dayjs/plugin/calendar'
 import updateLocale from 'dayjs/plugin/updateLocale'
@@ -84,13 +83,68 @@ export default forwardRef(({
   messages,
   onScrollDown,
 }, ref) => {
-  const [open, setOpen] = useState(false);
-  const styles = useStyles(useTheme())
-  const { oauth } = useContext(Context);
+  const [openAddUser, setOpenAddUser] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [newMessage, setNewMessage] = useState(null);
   const [curCreation , setCurCreation] = useState('');
+  const [inputValueUser, setInputValueUser] = useState([]);
+  const [usersListDb, setUsersListDb] = useState([]);
+  const [usersDisplay, setUsersDisplay] = useState([]);
+  const {oauth, channels, setChannels} = useContext(Context)
+  const styles = useStyles(useTheme());
+  useEffect( () => {
+    const fetch = async () => {
+      try{
+        const {data: users} = await axios.get('http://localhost:3001/users', {
+          headers: {
+            'Authorization': `Bearer ${oauth.access_token}`
+          }
+        })
+        let tempo = []
+        let already = false
+        for (let i=0; i<users.length; i++){
+          if(users[i].username!==oauth.email)
+          tempo.push({label: users[i].username})}
+        setUsersListDb(tempo)
+      }catch(err){
+        console.error(err)
+      }
+    }
+    fetch()
+  }, [])
+
+  const onSubmitUser = async () => {
+    const tempo = inputValueUser.map(username => {
+     return username.label
+   } )
+   const newList= channel.usersList.concat(tempo)
+    const {data: channelCurrent} = await axios.put(
+      `http://localhost:3001/channels/${channel.id}`
+    , {
+      name: channel.name,
+      owner: channel.owner,
+      usersList: newList
+    },{
+    headers: {
+      'Authorization': `Bearer ${oauth.access_token}`
+    }})
+    updateChannels(channelCurrent)
+    setInputValueUser([])
+    handleCloseUser()
+  }
+
+  const updateChannels = (channelCurrent) => {
+    channel.usersList = channelCurrent.usersList
+    const newChannels = channels.map(current  => {
+      if(channelCurrent.id === current.id)
+        return channelCurrent
+      else
+        return current
+    })
+    setChannels(newChannels)
+  }
+
   // Expose the `scroll` action
   useImperativeHandle(ref, () => ({
     scroll: scroll
@@ -129,19 +183,19 @@ export default forwardRef(({
    updateMessage(nmessage, curCreation)
     handleCloseUpdate()
   }
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+const rootEl = useRef(null)
+const scrollEl = useRef(null)
+const scroll = () => {
+  scrollEl.current.scrollIntoView()
+}
+  // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
+  const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
 
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
-
+  
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
     setNewMessage(null);
@@ -158,7 +212,18 @@ export default forwardRef(({
   }
   // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
   const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
-  useLayoutEffect(() => {
+  
+  const handleCloseUser = () => {
+    setInputValueUser([])
+    setOpenAddUser(false);
+  };
+const handleClickOpenIcon = () => {
+    const usersTempo = usersListDb.filter(username =>
+      !channel.usersList.some(userL => userL === username.label))
+    setUsersDisplay(usersTempo)
+    setOpenAddUser(true);
+  }
+  useLayoutEffect( () => {
     const rootNode = rootEl.current // react-hooks/exhaustive-deps
     const handleScroll = () => {
       if (throttleTimeout.current === null) {
@@ -177,31 +242,40 @@ export default forwardRef(({
   return (
     <div css={styles.root} ref={rootEl}>
       <div css={styles.nameDiv}>
-        <h1>Messages for {channel.name}</h1>
-        <IconButton
-          css={{ marginLeft: 15 }}
-          onClick={handleClickOpen}>
-          <PersonAddAltRoundedIcon />
-        </IconButton>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Invite a user</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Add an existing user to this channel by searching its email
-            </DialogContentText>
-            <Autocomplete
-              disablePortal
-              id="combo-box-users"
-              options={[{ label: "hey" }, { label: "hey" }]}
-              sx={{ padding: 2, width: 300 }}
-              renderInput={(params) => <TextField {...params} label="User email" />}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose}>Add</Button>
-          </DialogActions>
-        </Dialog>
+      <h1>Messages for {channel.name}</h1>
+      <IconButton
+      css={{marginLeft: 15}}
+      onClick={handleClickOpenIcon}>
+      <PersonAddAltRoundedIcon/>
+      </IconButton>
+      <Dialog open={openAddUser} onClose={handleCloseUser}>
+       <DialogTitle>Invite users</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Add existing users to this channel
+        </DialogContentText>
+        <Stack spacing={3} sx={{ width: 350 }}>
+        <Autocomplete
+        multiple
+        disablePortal
+        id="combo-box-users"
+        options={usersDisplay}
+        sx={{ padding: 2, width: 300 }}
+        renderInput={(params) => <TextField {...params}
+        variant="standard"
+        label="User emails"/>}
+        value={inputValueUser}
+        onChange={(event, inputValueUser) => {
+          setInputValueUser(inputValueUser);
+        }}
+        />
+         </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseUser}>Cancel</Button>
+        <Button onClick={onSubmitUser}>Add</Button>
+      </DialogActions>
+    </Dialog>
       </div>
       <ul>
         {messages.map((message, i) => {

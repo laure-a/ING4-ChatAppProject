@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 // Channels
 
 app.get('/channels', authenticate, async (req, res) => {
-  const channels = await db.channels.list()
+  const channels = await db.channels.list(req.query.connectedUser)
   res.json(channels)
 })
 
@@ -37,7 +37,8 @@ app.get('/channels/:id', async (req, res) => {
 })
 
 app.put('/channels/:id', async (req, res) => {
-  const channel = await db.channels.update(req.body)
+  console.log(req.body)
+  const channel = await db.channels.update(req.body, req.params.id)
   res.json(channel)
 })
 
