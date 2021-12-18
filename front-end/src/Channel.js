@@ -51,11 +51,17 @@ export default function Channel() {
     setMessages(newMessages)
   }
   const updateMessage = (newmessage, curCreation)=>{
-    console.log("coucou")
-    const index =messages.findIndex(message => message.creation===curCreation)
-    console.log(index)
-    const newMessages=messages.splice(index,1, newmessage)
-    setMessages(newMessages)
+    for(let i=0; i<messages.length; i++)
+    {
+      if(messages[i].creation=== curCreation)
+      {
+        messages[i]=newmessage
+      }
+    }
+    // const index =messages.findIndex(message => message.creation===curCreation)
+    // const newMessages=messages.splice(index,1, newmessage)
+    // setMessages(newMessages)
+    // console.log(newMessages)
   }
   useEffect( () => {
     const fetch = async () => {
