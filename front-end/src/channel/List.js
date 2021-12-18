@@ -5,8 +5,9 @@ import Context from '../Context'
 import axios from 'axios';
 // Layout
 import { useTheme } from '@mui/styles';
-import {Button, IconButton} from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from '@mui/icons-material/Update';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,8 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Stack from '@mui/material/Stack';
-
-import {red} from '@mui/material/colors';
+import { red, blue } from '@mui/material/colors';
 // Markdown
 import { unified } from 'unified'
 import markdown from 'remark-parse'
@@ -67,6 +67,9 @@ const useStyles = (theme) => ({
   deleteButton: {
     color: red[800],
   },
+  updateButton: {
+    color: blue[800],
+  },
   nameDiv: {
     display: "flex",
     alignItems: "center",
@@ -76,11 +79,15 @@ const useStyles = (theme) => ({
 export default forwardRef(({
   channel,
   deleteMessage,
+  updateMessage,
   messages,
   onScrollDown,
 }, ref) => {
   const [openAddUser, setOpenAddUser] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [newMessage, setNewMessage] = useState(null);
+  const [curCreation , setCurCreation] = useState('');
   const [inputValueUser, setInputValueUser] = useState([]);
   const [usersListDb, setUsersListDb] = useState([]);
   const [usersDisplay, setUsersDisplay] = useState([]);
@@ -143,21 +150,38 @@ export default forwardRef(({
     scroll: scroll
   }));
 
-  const onSubmit = async (channelId,creation) => {
-     await axios.delete(
+  const onSubmit = async (channelId, creation) => {
+    await axios.delete(
       `http://localhost:3001/channels/${channel.id}/messages`
-    , {
-      params: {
-        channelId: `${channelId}`,
-        messageCreation: `${creation}`,
+      , {
+        params: {
+          channelId: `${channelId}`,
+          messageCreation: curCreation,
+        }
+      }, {
+      headers: {
+        'Authorization': `Bearer ${oauth.access_token}`
       }
-    },{
-    headers: {
-      'Authorization': `Bearer ${oauth.access_token}`
-    }})
-    deleteMessage(creation)
+    })
+    deleteMessage(curCreation)
     handleCloseDelete()
+  }
 
+  const onSubmitUpdate = async () => {
+   const {data: nmessage}= await axios.put(
+      `http://localhost:3001/channels/${channel.id}/messages`
+      , {
+          content: newMessage,
+          author: `${oauth.email}`,
+          channelId: channel.id,
+          creation: curCreation,
+        }, {
+      headers: {
+        'Authorization': `Bearer ${oauth.access_token}`
+      }
+    })
+   updateMessage(nmessage, curCreation)
+    handleCloseUpdate()
   }
 const rootEl = useRef(null)
 const scrollEl = useRef(null)
@@ -167,34 +191,45 @@ const scroll = () => {
   // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
   const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
 
-  const handleClickOpenDelete = () => {
-    setOpenDelete(true);
-  };
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
-
-  const handleClickOpenIcon = () => {
-    console.log(channel.usersList)
-    console.log(usersListDb)
-    const usersTempo = usersListDb.filter(username =>
-      !channel.usersList.some(userL => userL === username.label))
-    setUsersDisplay(usersTempo)
-    setOpenAddUser(true);
+  
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setNewMessage(null);
   };
+
+  const handleChangeUpdate = (e) => {
+    setNewMessage(e.target.value)
+  }
+
+  const rootEl = useRef(null)
+  const scrollEl = useRef(null)
+  const scroll = () => {
+    scrollEl.current.scrollIntoView()
+  }
+  // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
+  const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
+  
   const handleCloseUser = () => {
     setInputValueUser([])
     setOpenAddUser(false);
   };
-
+const handleClickOpenIcon = () => {
+    const usersTempo = usersListDb.filter(username =>
+      !channel.usersList.some(userL => userL === username.label))
+    setUsersDisplay(usersTempo)
+    setOpenAddUser(true);
+  }
   useLayoutEffect( () => {
     const rootNode = rootEl.current // react-hooks/exhaustive-deps
     const handleScroll = () => {
       if (throttleTimeout.current === null) {
         throttleTimeout.current = setTimeout(() => {
           throttleTimeout.current = null
-          const {scrollTop, offsetHeight, scrollHeight} = rootNode // react-hooks/exhaustive-deps
+          const { scrollTop, offsetHeight, scrollHeight } = rootNode // react-hooks/exhaustive-deps
           onScrollDown(scrollTop + offsetHeight < scrollHeight)
         }, 200)
       }
@@ -243,40 +278,71 @@ const scroll = () => {
     </Dialog>
       </div>
       <ul>
-        { messages.map( (message, i) => {
-            const {value} = unified()
+        {messages.map((message, i) => {
+          const { value } = unified()
             .use(markdown)
             .use(remark2rehype)
             .use(html)
             .processSync(message.content);
-            return (
-              <li key={i} css={styles.message}>
-                <p>
-                  <span>{message.author}</span>
-                  {' - '}
-                  <span>{dayjs().calendar(message.creation)}</span>
-                  {'     '}
-                  {message.author === oauth.email && (
-                    <span>
-                      <IconButton
-                       onClick={handleClickOpenDelete}
-                       css={styles.deleteButton}>
-                      <DeleteIcon/>
+          return (
+            <li key={i} css={styles.message}>
+              <p>
+                <span>{message.author}</span>
+                {' - '}
+                <span>{dayjs(message.creation/1000).calendar()}</span>
+                {'     '}
+                {message.author === oauth.email && (
+                  <span>
+                    <IconButton
+                      onClick={()=>{
+                        setOpenDelete(true);
+                      setCurCreation(message.creation)
+                      }}
+                      css={styles.deleteButton}>
+                      <DeleteIcon />
                     </IconButton>
-                   </span>
-                  )}
-                          <Dialog open={openDelete} onClose={handleCloseDelete}>
-       <DialogTitle>Are you sure that you want to delete this message ?</DialogTitle>
-       <DialogActions>
-           <Button onClick={handleCloseDelete}>Cancel</Button>
-           <Button onClick={()=>onSubmit(channel.id, message.creation)}>Yes</Button>
+                    <IconButton
+                      onClick= {()=>{
+                        setOpenUpdate(true);
+                      setCurCreation(message.creation)
+                      }}
+                      css={styles.updateButton}>
+                      <UpdateIcon />
+                    </IconButton>
+                  </span>
+                )}
+                <Dialog open={openDelete} onClose={handleCloseDelete}>
+                  <DialogTitle>Are you sure that you want to delete this message ?</DialogTitle>
+                  <DialogActions>
+                    <Button onClick={handleCloseDelete}>Cancel</Button>
+                    <Button onClick={() => onSubmit(channel.id, message.creation)}>Yes</Button>
+                  </DialogActions>
+                </Dialog>
+                <Dialog open={openUpdate} onClose={handleCloseUpdate} fullWidth={true} maxWidth='md'>
+                  <DialogTitle> Enter your new message</DialogTitle>
+                  <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="newMessage"
+              label="New message:"
+              type="text"
+              fullWidth
+              value={newMessage}
+              onChange={handleChangeUpdate}
+              required
+            />
+            <DialogActions>
+         <Button onClick={handleCloseUpdate}>Cancel</Button>
+         <Button onClick={onSubmitUpdate}>Edit</Button>
        </DialogActions>
-         </Dialog>
-                </p>
-                <div dangerouslySetInnerHTML={{__html: value}}>
-                </div>
-              </li>
-            )
+          </DialogContent>
+                </Dialog>
+              </p>
+              <div dangerouslySetInnerHTML={{ __html: value }}>
+              </div>
+            </li>
+          )
         })}
       </ul>
       <div ref={scrollEl} />
