@@ -19,6 +19,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { red } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
+import Tooltip from '@mui/material/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 // Local
 import Context from './Context'
 import {useNavigate} from 'react-router-dom'
@@ -52,6 +55,7 @@ export default function Channels() {
   } = useContext(Context)
   const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
   const [usersListDb, setUsersListDb] = useState([]);
   const [inputValueUser, setInputValueUser] = useState([]);
 
@@ -64,7 +68,6 @@ export default function Channels() {
           }
         })
         let tempo = []
-        let already = false
         for (let i=0; i<users.length; i++){
           if(users[i].username!==oauth.email)
           tempo.push({label: users[i].username})}
@@ -92,8 +95,8 @@ export default function Channels() {
       'Authorization': `Bearer ${oauth.access_token}`
     }})
     addChannel(channel)
-    setChannelName('')
     handleClose()
+    setOpenSuccess(true)
   }
   const handleChange = (e) => {
     setChannelName(e.target.value)
@@ -102,11 +105,21 @@ export default function Channels() {
     setChannels([...channels, channel])
   }
   const handleClickOpen = () => {
+    setChannelName('')
+    setInputValueUser([])
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseSuccess = (event, reason) => {
+    setOpenSuccess(false)
+   if (reason === 'clickaway') {
+     return;
+   }
+
+   setOpen(false);
+ };
   const naviate = useNavigate();
   useEffect( () => {
     const fetch = async () => {
@@ -149,11 +162,14 @@ export default function Channels() {
       <div css={styles.titleContainer}>
       <h3 css={styles.title}> Channels </h3>
       <div>
+      <Tooltip title="Create channel">
       <IconButton
       onClick={handleClickOpen}
       css={styles.addButton}>
       <AddCircleIcon fontSize="inherit"/>
       </IconButton>
+      </Tooltip>
+      <Stack>
       <Dialog open={open} onClose={handleClose}>
        <DialogTitle>Create a new channel</DialogTitle>
        <DialogContent>
@@ -194,6 +210,12 @@ export default function Channels() {
          <Button onClick={onSubmit}>Send</Button>
        </DialogActions>
      </Dialog>
+     <Snackbar open={openSuccess} autoHideDuration={3000} onClose={handleCloseSuccess}>
+        <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '100%' }}>
+          Channel successfully created !
+        </Alert>
+      </Snackbar>
+      </Stack>
      </div>
       </div>
       </li>

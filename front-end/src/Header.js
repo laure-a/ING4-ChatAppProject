@@ -9,6 +9,8 @@ import Context from './Context';
 import Gravatar from 'react-gravatar'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { red, grey } from '@mui/material/colors';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Tooltip from '@mui/material/Tooltip';
 
 const useStyles = (theme) => ({
   header: {
@@ -105,12 +107,22 @@ export default function Header({
       style={{margin: '10px', borderRadius: '25px'}}
       protocol="https://"
       />
+      <Tooltip title="Settings">
+      <IconButton
+      // onClick={}
+      size="large"
+      sx={{"&:hover": {background: grey[200]}}}>
+      <SettingsIcon fontSize="inherit"/>
+      </IconButton>
+      </Tooltip>
+      <Tooltip title="Logout">
       <IconButton onClick={onClickLogout}
       size="large"
       css={styles.logout}
       sx={{"&:hover": {background: grey[200]}}}>
       <LogoutIcon fontSize="inherit"/>
       </IconButton>
+      </Tooltip>
       </span>
       :
       <span css={styles.user}> new user</span>

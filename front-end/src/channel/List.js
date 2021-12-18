@@ -207,7 +207,7 @@ const scroll = () => {
   return (
     <div css={styles.root} ref={rootEl}>
       <div css={styles.nameDiv}>
-      <h1>Messages for {channel.name}</h1>
+      <h1> ~ Messages for {channel.name}</h1>
       <IconButton
       css={{marginLeft: 15}}
       onClick={handleClickOpenIcon}>
