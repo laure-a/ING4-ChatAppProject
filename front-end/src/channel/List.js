@@ -217,7 +217,7 @@ export default forwardRef(({
               <p>
                 <span>{message.author}</span>
                 {' - '}
-                <span>{dayjs().calendar(message.creation)}</span>
+                <span>{dayjs(message.creation/1000).calendar()}</span>
                 {'     '}
                 {message.author === oauth.email && (
                   <span>
