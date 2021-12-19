@@ -16,6 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
+import { useDropzone } from 'react-dropzone';
 const useStyles = (theme) => ({
   header: {
     height: 75,
@@ -124,6 +125,15 @@ export default function Header({
       )
     },
   })
+
+  const images = files.map((file) => (
+    <div key={file.name}>
+      <div>
+        <img src={file.preview} style={{ width: "50px" }} alt="preview" />
+      </div>
+    </div>
+  ))
+
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
