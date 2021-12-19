@@ -1,3 +1,5 @@
+var bodyParser = require('body-parser')
+
 
 const db = require('./db')
 const express = require('express')
@@ -5,6 +7,8 @@ const cors = require('cors')
 const authenticator = require('./authenticator')
 
 const app = express()
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 const authenticate = authenticator({
   test_payload_email: process.env['TEST_PAYLOAD_EMAIL'],
   jwks_uri: 'http://127.0.0.1:5556/dex/keys'
