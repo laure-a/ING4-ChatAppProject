@@ -89,6 +89,7 @@ app.get('/users/:id', async (req, res) => {
 })
 
 app.put('/users/:id', async (req, res) => {
+  console.log(req.body)
   const user = await db.users.update(req.body)
   res.json(user)
 })
