@@ -74,7 +74,8 @@ export default function Header({
   const styles = useStyles(useTheme())
   const {
     oauth, setOauth,
-    drawerVisible, setDrawerVisible
+    drawerVisible, setDrawerVisible,
+    currentUser, setCurrentUser
   } = useContext(Context)
   const drawerToggle = (e) => {
     setDrawerVisible(!drawerVisible)
@@ -83,7 +84,6 @@ export default function Header({
     e.stopPropagation()
     setOauth(null)
   }
-
   const handleCloseSelection = () => {
     setOpenSelection(false);
   };
@@ -106,25 +106,28 @@ export default function Header({
             <div>
               {oauth.email}
             </div>
-            {/* user.avatchoice === 0 ?(
-            <Gravatar //gravatar image with default parameters override
-              email={oauth.email}
-              size={50}
-              rating="pg"
-              default="monsterid"
-              className="CustomAvatar-image"
-              style={{ margin: '10px', borderRadius: '25px' }}
-              protocol="https://"
-            />
-            ) : user.avatchoice===1 ?(
+            {currentUser.avatchoice === 0 ? (
+              <Gravatar //gravatar image with default parameters override
+                email={oauth.email}
+                size={50}
+                rating="pg"
+                default="monsterid"
+                className="CustomAvatar-image"
+                style={{ margin: '10px', borderRadius: '25px' }}
+                protocol="https://"
+              />
+            ) : currentUser.avatchoice === 1 ? (
               <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
-            ) : user.avatchoice===2 ?(
+            ) : currentUser.avatchoice === 2 ? (
               <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
-            ) : user.avatchoice===3 ?(
+            ) : currentUser.avatchoice === 3 ? (
               <img src="https://img.icons8.com/color/48/000000/spyro.png" />
-            ) : user.avatchoice===4 ?(
+            ) : currentUser.avatchoice === 4 ? (
               <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
-            ) */}
+            ) : (
+              <img src="https://img.icons8.com/ios/50/000000/question-mark.png" />
+            )
+            }
             <Button
               onClick={() => {
                 setOpenSelection(true);
@@ -138,7 +141,7 @@ export default function Header({
               <LogoutIcon fontSize="inherit" />
             </IconButton>
           </span>
-          
+
           :
           <span css={styles.user}> new user</span>
       }
@@ -147,10 +150,10 @@ export default function Header({
         <DialogActions>
           <Button onClick={handleCloseSelection}>Cancel</Button>
           <Button
-            onClick= {()=>{
+            onClick={() => {
               setOpenSelection(false);
             }}
-            >Default Gravatar</Button>
+          >Default Gravatar</Button>
           <Gravatar //gravatar image with default parameters override
             email={oauth.email}
             size={50}
@@ -173,15 +176,15 @@ export default function Header({
           >Avatar 2</Button>
           <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
           <Button
-          onClick= {()=>{
-            setOpenSelection(false);
-          }}
+            onClick={() => {
+              setOpenSelection(false);
+            }}
           >Avatar 3</Button>
           <img src="https://img.icons8.com/color/48/000000/spyro.png" />
           <Button
-          onClick= {()=>{
-            setOpenSelection(false);
-          }}
+            onClick={() => {
+              setOpenSelection(false);
+            }}
           >Avatar 4</Button>
           <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
         </DialogActions>
