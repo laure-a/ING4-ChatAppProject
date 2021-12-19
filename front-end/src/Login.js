@@ -131,7 +131,8 @@ const LoadToken = ({
   removeCookie,
   setOauth
 }) => {
-  const avatchoice = 0
+  const avatChoice = 0
+  const uploadAvat = 0
   const {oauth, currentUser, setCurrentUser}= useContext(Context)
   const styles = useStyles(useTheme())
   const navigate = useNavigate();
@@ -165,7 +166,7 @@ const LoadToken = ({
           if(!found)
           {
             const newUser = await axios.post(`http://localhost:3001/users`,
-              { username : data.email, avatchoice},
+              { username : data.email, avatChoice, uploadAvat},
               { headers: {
                 'Authorization': `Bearer ${data.access_token}`
               }
