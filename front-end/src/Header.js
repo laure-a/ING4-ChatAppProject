@@ -110,6 +110,20 @@ export default function Header({
     setCurrentUser(nUser)
   }
 
+  const [files, setFiles] = useState([])
+  const { getRootProps, getInputProps } = useDropzone({
+    multiple: false,
+    accept: "image/*",
+    onDrop: (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      )
+    },
+  })
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
