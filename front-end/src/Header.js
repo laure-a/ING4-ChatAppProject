@@ -89,10 +89,14 @@ export default function Header({
     setOpenSelection(false);
   };
 
+  const handleCloseUpload = () => {
+    setOpenUpload(false);
+  };
+
   let choice
 
   const onSubmitAvatar = async () => {
-    const {data:nUser} =await axios.put(
+    const { data: nUser } = await axios.put(
       `http://localhost:3001/users/${currentUser.id}`
       , {
         id: currentUser.id,
@@ -105,8 +109,25 @@ export default function Header({
     })
     setCurrentUser(nUser)
   }
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
   const [openSelection, setOpenSelection] = useState(false);
-  return (
+  const [openUpload, setOpenUpload] = useState(false);
+    return (
+      
     <header css={styles.header}>
       <IconButton
         color="inherit"
@@ -124,6 +145,7 @@ export default function Header({
             <div>
               {oauth.email}
             </div>
+            {console.log(currentUser.avatchoice)}
             {currentUser.avatchoice === 0 ? (
               <Gravatar //gravatar image with default parameters override
                 email={oauth.email}
@@ -149,6 +171,7 @@ export default function Header({
             <Button
               onClick={() => {
                 setOpenSelection(true);
+                setFiles([]);
               }}  >
               Choose Avatar
             </Button>
@@ -200,10 +223,28 @@ export default function Header({
                   onClick={() => {
                     choice = 4;
                     onSubmitAvatar();
+                    
                     setOpenSelection(false);
                   }}
                 >Avatar 4</Button>
                 <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
+                <div>
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <Button>Upload file</Button>
+                        <div>{images}</div>
+                        {files.length ?
+                      <Button
+                      onClick={()=>{
+                        setOpenSelection(false);
+                      }}
+                      >  Validate</Button>
+                      :
+                      <span></span>
+                    } 
+
+                      </div>
+                    </div>
               </DialogActions>
             </Dialog>
             <IconButton onClick={onClickLogout}
