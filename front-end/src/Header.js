@@ -1,9 +1,9 @@
 
 /** @jsxImportSource @emotion/react */
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 // Layout
 import { useTheme } from '@mui/styles';
-import { IconButton, Link } from '@mui/material';
+import { IconButton, Link, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Context from './Context';
 import Gravatar from 'react-gravatar'
@@ -11,6 +11,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { red, grey } from '@mui/material/colors';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Tooltip from '@mui/material/Tooltip';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 
 const useStyles = (theme) => ({
   header: {
@@ -68,6 +74,7 @@ const useStyles = (theme) => ({
 export default function Header({
   drawerToggleListener
 }) {
+  const [openSettings, setOpenSettings] = useState(false);
   const styles = useStyles(useTheme())
   const {
     oauth, setOauth,
@@ -80,6 +87,12 @@ export default function Header({
     e.stopPropagation()
     setOauth(null)
   }
+  const onClickSettings = () => {
+    setOpenSettings(true);
+  };
+  const closeSettings = () => {
+    setOpenSettings(false);
+  };
   return (
     <header css={styles.header}>
     <IconButton
@@ -109,12 +122,20 @@ export default function Header({
       />
       <Tooltip title="Settings">
       <IconButton
-      // onClick={}
+      onClick={onClickSettings}
       size="large"
       sx={{"&:hover": {background: grey[200]}}}>
       <SettingsIcon fontSize="inherit"/>
       </IconButton>
       </Tooltip>
+      <Dialog open={openSettings} onClose={closeSettings}>
+       <DialogTitle>Account settings</DialogTitle>
+       <DialogContent>
+       </DialogContent>
+       <DialogActions>
+         <Button onClick={closeSettings}>Cancel changes</Button>
+       </DialogActions>
+     </Dialog>
       <Tooltip title="Logout">
       <IconButton onClick={onClickLogout}
       size="large"
