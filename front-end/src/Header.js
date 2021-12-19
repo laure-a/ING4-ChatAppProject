@@ -15,6 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
 const useStyles = (theme) => ({
   header: {
     height: 75,
@@ -87,6 +88,23 @@ export default function Header({
   const handleCloseSelection = () => {
     setOpenSelection(false);
   };
+
+  let choice
+
+  const onSubmitAvatar = async () => {
+    const {data:nUser} =await axios.put(
+      `http://localhost:3001/users/${currentUser.id}`
+      , {
+        id: currentUser.id,
+        email: currentUser.email,
+        avatchoice: choice,
+      }, {
+      headers: {
+        'Authorization': `Bearer ${oauth.access_token}`
+      },
+    })
+    setCurrentUser(nUser)
+  }
   const [openSelection, setOpenSelection] = useState(false);
   return (
     <header css={styles.header}>
@@ -134,6 +152,60 @@ export default function Header({
               }}  >
               Choose Avatar
             </Button>
+            <Dialog open={openSelection} onClose={handleCloseSelection} fullWidth={true} maxWidth='md'>
+              <DialogTitle>Choose an avatar among the selection</DialogTitle>
+              <DialogActions>
+                <Button onClick={handleCloseSelection}>Cancel</Button>
+                <Button
+                  onClick={() => {
+                    choice = 0;
+                    onSubmitAvatar();
+                    setOpenSelection(false);
+                  }}
+                >Default Gravatar</Button>
+                <Gravatar //gravatar image with default parameters override
+                  email={oauth.email}
+                  size={50}
+                  rating="pg"
+                  default="monsterid"
+                  className="CustomAvatar-image"
+                  style={{ margin: '10px', borderRadius: '25px' }}
+                  protocol="https://"
+                />
+                <Button
+                  onClick={() => {
+                    choice = 1;
+                    onSubmitAvatar();
+                    setOpenSelection(false);
+                  }}
+                >Avatar 1</Button>
+                <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
+                <Button
+                  onClick={() => {
+                    choice = 2;
+                    onSubmitAvatar();
+                    setOpenSelection(false);
+                  }}
+                >Avatar 2</Button>
+                <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
+                <Button
+                  onClick={() => {
+                    choice = 3;
+                    onSubmitAvatar();
+                    setOpenSelection(false);
+                  }}
+                >Avatar 3</Button>
+                <img src="https://img.icons8.com/color/48/000000/spyro.png" />
+                <Button
+                  onClick={() => {
+                    choice = 4;
+                    onSubmitAvatar();
+                    setOpenSelection(false);
+                  }}
+                >Avatar 4</Button>
+                <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
+              </DialogActions>
+            </Dialog>
             <IconButton onClick={onClickLogout}
               size="large"
               css={styles.logout}
@@ -145,50 +217,6 @@ export default function Header({
           :
           <span css={styles.user}> new user</span>
       }
-      <Dialog open={openSelection} onClose={handleCloseSelection} fullWidth={true} maxWidth='md'>
-        <DialogTitle>Choose an avatar among the selection</DialogTitle>
-        <DialogActions>
-          <Button onClick={handleCloseSelection}>Cancel</Button>
-          <Button
-            onClick={() => {
-              setOpenSelection(false);
-            }}
-          >Default Gravatar</Button>
-          <Gravatar //gravatar image with default parameters override
-            email={oauth.email}
-            size={50}
-            rating="pg"
-            default="monsterid"
-            className="CustomAvatar-image"
-            style={{ margin: '10px', borderRadius: '25px' }}
-            protocol="https://"
-          />
-          <Button
-            onClick={() => {
-              setOpenSelection(false);
-            }}
-          >Avatar 1</Button>
-          <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
-          <Button
-            onClick={() => {
-              setOpenSelection(false);
-            }}
-          >Avatar 2</Button>
-          <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
-          <Button
-            onClick={() => {
-              setOpenSelection(false);
-            }}
-          >Avatar 3</Button>
-          <img src="https://img.icons8.com/color/48/000000/spyro.png" />
-          <Button
-            onClick={() => {
-              setOpenSelection(false);
-            }}
-          >Avatar 4</Button>
-          <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
-        </DialogActions>
-      </Dialog>
     </header>
   );
 }
