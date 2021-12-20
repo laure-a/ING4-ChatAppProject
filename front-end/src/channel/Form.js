@@ -1,4 +1,3 @@
-
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react'
 import axios from 'axios';
@@ -46,7 +45,7 @@ const ColoredTextField = withStyles((theme) => ({
       "& fieldset": {
         borderColor: grey[400],
       },
-       '& .MuiInputBase-input': {
+      '& .MuiInputBase-input': {
         color: grey[900],
       },
       "&.Mui-focused fieldset": {
@@ -69,43 +68,43 @@ export default function Form({
   const onSubmit = async () => {
     const {data: message} = await axios.post(
       `http://localhost:3001/channels/${channel.id}/messages`
-    , {
-      content: content,
-      author: `${oauth.email}`,
-    })
-    addMessage(message)
-    setContent('')
-  }
-  const handleChange = (e) => {
-    setContent(e.target.value)
-  }
-  return (
-    <form css={styles.form} onSubmit={onSubmit} noValidate>
+      , {
+        content: content,
+        author: `${oauth.email}`,
+      })
+      addMessage(message)
+      setContent('')
+    }
+    const handleChange = (e) => {
+      setContent(e.target.value)
+    }
+    return (
+      <form css={styles.form} onSubmit={onSubmit} noValidate>
       <ColoredTextField
-        id="outlined-multiline-flexible"
-        label="Message"
-        multiline
-        maxRows={4}
-        value={content}
-        onChange={handleChange}
-        variant="outlined"
-        css={styles.content}
-        />
+      id="outlined-multiline-flexible"
+      label="Message"
+      multiline
+      maxRows={4}
+      value={content}
+      onChange={handleChange}
+      variant="outlined"
+      css={styles.content}
+      />
       <div>
-        <Button
-          sx={{
-            "&:hover": {
-              color:"white",
-              background: red[900]}
-          }}
-          variant="contained"
-          css={styles.send}
-          endIcon={<SendIcon />}
-          onClick={onSubmit}
+      <Button
+      sx={{
+        "&:hover": {
+          color:"white",
+          background: red[900]}
+        }}
+        variant="contained"
+        css={styles.send}
+        endIcon={<SendIcon />}
+        onClick={onSubmit}
         >
-          Send
+        Send
         </Button>
-      </div>
-    </form>
-  )
-}
+        </div>
+        </form>
+      )
+    }

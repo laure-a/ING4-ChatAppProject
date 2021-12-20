@@ -53,9 +53,9 @@ const ModeSwitch = styled((props) => (
     },
     '&.Mui-disabled .MuiSwitch-thumb': {
       color:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
+      theme.palette.mode === 'light'
+      ? theme.palette.grey[100]
+      : theme.palette.grey[600],
     },
     '&.Mui-disabled + .MuiSwitch-track': {
       opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
@@ -90,9 +90,9 @@ export default function Settings({dialogOpen, handleCloseDialog}) {
     return value;
   }
 
-    const updateCurrentUser = (changeUser) => {
-      setCurrentUser(changeUser)
-    }
+  const updateCurrentUser = (changeUser) => {
+    setCurrentUser(changeUser)
+  }
 
   const changeLanguage = (event) => {
     setLanguage(event.target.value);
@@ -103,75 +103,75 @@ export default function Settings({dialogOpen, handleCloseDialog}) {
   const onSave = async () => {
     const {data: changeUser} = await axios.put(
       `http://localhost:3001/users/${currentUser.id}`
-    , {
-      id: `${currentUser.id}`,
-      username: `${currentUser.username}`,
-      language: language,
-      fontsize: fontsize,
-      dayMode: dayMode,
-      avatChoice: currentUser.avatChoice,
-      uploadAvat: currentUser.uploadAvat
-    },{
-    headers: {
-      'Authorization': `Bearer ${oauth.access_token}`
-    }})
-    updateCurrentUser(changeUser)
-    handleCloseSettings()
-  }
+      , {
+        id: `${currentUser.id}`,
+        username: `${currentUser.username}`,
+        language: language,
+        fontsize: fontsize,
+        dayMode: dayMode,
+        avatChoice: currentUser.avatChoice,
+        uploadAvat: currentUser.uploadAvat
+      },{
+        headers: {
+          'Authorization': `Bearer ${oauth.access_token}`
+        }})
+        updateCurrentUser(changeUser)
+        handleCloseSettings()
+      }
 
-  return (
-    <Dialog open={dialogOpen} onClose={handleCloseSettings}>
-    <DialogTitle>Account settings</DialogTitle>
-    <DialogContent css={{flexDirection: "column", display: "flex"}}>
-    <FormControlLabel
-     control={<ModeSwitch
-       sx={{ m: 1 }}/>}
-       checked={dayMode}
-     onChange={()=>setDayMode(!dayMode)}
-     label={dayMode? "Day mode" : "Night mode"}
-   />
-   <FormControl component="fieldset">
-   <FormLabel css={{paddingTop: 20, paddingBottom: 5, color: amber[900]}} component="legend">Language</FormLabel>
-   <RadioGroup
-     aria-label="language"
-     value={language}
-     onChange={changeLanguage}
-     name="radio-buttons-group">
-     <FormControlLabel value="english" control={<Radio />} label="English" />
-     <FormControlLabel value="french" control={<Radio />} label="Français" />
-     <FormControlLabel value="chinese" control={<Radio />} label="中文" />
-   </RadioGroup>
- </FormControl>
- <Box sx={{ width: 300 }}>
-   <FormLabel css={{paddingTop: 20, paddingBottom: 5, color: amber[900]}} component="legend">Font size</FormLabel>
-  <Slider
-    aria-label="Fontsize"
-    css={{color: red[800]}}
-    value={fontsize}
-    onChange={changeFontsize}
-    getAriaValueText={valuetext}
-    valueLabelDisplay="auto"
-    step={2}
-    marks
-    min={10}
-    max={30}
-  />
-</Box>
-    </DialogContent>
-    <DialogActions>
-      <Button sx={{
-        borderColor:red[800],
-        color:red[800],
-        "&:hover": {borderColor: grey[200], background: grey[200] }}}
-       variant="outlined"
-       onClick={handleCloseSettings}>Cancel</Button>
-       <Button sx={{
-         borderColor:grey[800],
-         color:grey[800],
-         "&:hover": {borderColor: grey[200], background: grey[200] }}}
-        variant="outlined"
-        onClick={onSave}>Save changes</Button>
-    </DialogActions>
-    </Dialog>
-  );
-}
+      return (
+        <Dialog open={dialogOpen} onClose={handleCloseSettings}>
+        <DialogTitle>Account settings</DialogTitle>
+        <DialogContent css={{flexDirection: "column", display: "flex"}}>
+        <FormControlLabel
+        control={<ModeSwitch
+          sx={{ m: 1 }}/>}
+          checked={dayMode}
+          onChange={()=>setDayMode(!dayMode)}
+          label={dayMode? "Day mode" : "Night mode"}
+          />
+          <FormControl component="fieldset">
+          <FormLabel css={{paddingTop: 20, paddingBottom: 5, color: amber[900]}} component="legend">Language</FormLabel>
+          <RadioGroup
+          aria-label="language"
+          value={language}
+          onChange={changeLanguage}
+          name="radio-buttons-group">
+          <FormControlLabel value="english" control={<Radio />} label="English" />
+          <FormControlLabel value="french" control={<Radio />} label="Français" />
+          <FormControlLabel value="chinese" control={<Radio />} label="中文" />
+          </RadioGroup>
+          </FormControl>
+          <Box sx={{ width: 300 }}>
+          <FormLabel css={{paddingTop: 20, paddingBottom: 5, color: amber[900]}} component="legend">Font size</FormLabel>
+          <Slider
+          aria-label="Fontsize"
+          css={{color: red[800]}}
+          value={fontsize}
+          onChange={changeFontsize}
+          getAriaValueText={valuetext}
+          valueLabelDisplay="auto"
+          step={2}
+          marks
+          min={10}
+          max={30}
+          />
+          </Box>
+          </DialogContent>
+          <DialogActions>
+          <Button sx={{
+            borderColor:red[800],
+            color:red[800],
+            "&:hover": {borderColor: grey[200], background: grey[200] }}}
+            variant="outlined"
+            onClick={handleCloseSettings}>Cancel</Button>
+            <Button sx={{
+              borderColor:grey[800],
+              color:grey[800],
+              "&:hover": {borderColor: grey[200], background: grey[200] }}}
+              variant="outlined"
+              onClick={onSave}>Save changes</Button>
+              </DialogActions>
+              </Dialog>
+            );
+          }

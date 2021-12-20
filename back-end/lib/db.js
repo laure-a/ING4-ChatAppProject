@@ -1,4 +1,3 @@
-
 const {v4: uuid} = require('uuid')
 const {clone, merge} = require('mixme')
 const microtime = require('microtime')
@@ -30,7 +29,7 @@ module.exports = {
           channel.id = key.split(':')[1]
           channel.usersList.forEach((user) => {
             if(user === connectedUser)
-              channels.push(channel)
+            channels.push(channel)
           })
         }).on( 'error', (err) => {
           reject(err)
@@ -87,63 +86,63 @@ module.exports = {
       if(!messageCreation) throw Error('No Message')
       await db.del(`messages:${channelId}:${messageCreation}`)
     },
-  
 
-  update: async(channelId, message)=>{
-    if(!channelId) throw Error('Invalid channel')
-    if(!message.creation) throw Error('No message')
-    await db.put(`messages:${channelId}:${message.creation}`, JSON.stringify(message));
-    return merge(message, { channelId: channelId, creation: message.creation });
+
+    update: async(channelId, message)=>{
+      if(!channelId) throw Error('Invalid channel')
+      if(!message.creation) throw Error('No message')
+      await db.put(`messages:${channelId}:${message.creation}`, JSON.stringify(message));
+      return merge(message, { channelId: channelId, creation: message.creation });
+    },
   },
-},
 
   users: {
     create: async (user) => {
       if(!user.username) throw Error('Invalid user')
       const id = uuid()
-      
-      await db.put(`users:${id}`, JSON.stringify(user)
-      )
 
-      return merge(user, {id: id})
-    },
-    get: async (id) => {
-      if(!id) throw Error('Invalid id')
-      const data = await db.get(`users:${id}`)
-      const user = JSON.parse(data)
-      return merge(user, {id: id})
-    },
-    list: async () => {
-      return new Promise( (resolve, reject) => {
-        const users = []
-        db.createReadStream({
-          gt: "users:",
-          lte: "users" + String.fromCharCode(":".charCodeAt(0) + 1),
-        }).on( 'data', ({key, value}) => {
-          user = JSON.parse(value)
-          user.id = key.split(':')[1]
-          users.push(user)
-        }).on( 'error', (err) => {
-          reject(err)
-        }).on( 'end', () => {
-          resolve(users)
-        })
-      })
-    },
-    update: async (user) => {
-      if (!user.id) throw Error("Invalid user");
-      await db.put(`users:${user.id}`, JSON.stringify(user));
-      return merge(user, { id: user.id });
-    },
-    delete: (id, user) => {
-      const original = store.users[id]
-      if(!original) throw Error('Unregistered user id')
-      delete store.users[id]
-    }
+      await db.put(`users:${id}`, JSON.stringify(user)
+    )
+
+    return merge(user, {id: id})
   },
-  admin: {
-    clear: async () => {
-      await db.clear()
-    }
+  get: async (id) => {
+    if(!id) throw Error('Invalid id')
+    const data = await db.get(`users:${id}`)
+    const user = JSON.parse(data)
+    return merge(user, {id: id})
+  },
+  list: async () => {
+    return new Promise( (resolve, reject) => {
+      const users = []
+      db.createReadStream({
+        gt: "users:",
+        lte: "users" + String.fromCharCode(":".charCodeAt(0) + 1),
+      }).on( 'data', ({key, value}) => {
+        user = JSON.parse(value)
+        user.id = key.split(':')[1]
+        users.push(user)
+      }).on( 'error', (err) => {
+        reject(err)
+      }).on( 'end', () => {
+        resolve(users)
+      })
+    })
+  },
+  update: async (user) => {
+    if (!user.id) throw Error("Invalid user");
+    await db.put(`users:${user.id}`, JSON.stringify(user));
+    return merge(user, { id: user.id });
+  },
+  delete: (id, user) => {
+    const original = store.users[id]
+    if(!original) throw Error('Unregistered user id')
+    delete store.users[id]
   }
+},
+admin: {
+  clear: async () => {
+    await db.clear()
+  }
+}
 }

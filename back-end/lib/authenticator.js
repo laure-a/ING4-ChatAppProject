@@ -1,4 +1,3 @@
-
 const jwksClient = require('jwks-rsa')
 const jwt = require('jsonwebtoken')
 
@@ -28,7 +27,7 @@ module.exports = ({jwks_uri, test_payload_email} = {}) => {
       }
       next()
     }
-    
+
   }
   if(!jwks_uri){
     throw Error('Invalid Settings: jwks_uri is required')

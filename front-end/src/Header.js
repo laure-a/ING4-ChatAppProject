@@ -118,36 +118,36 @@ export default function Header({
   };
 
   const handleCloseSelection = () => {
-        setOpenSelection(false);
-      };
+    setOpenSelection(false);
+  };
 
 
 
-     function isUser() {
-       if(currentUser)
-       {
-       return currentUser.avatChoice
-
-       }
-       else
-       {
-         return 0
-       }
-
-     }
-
-     function isUserAvatar() {
-      if(currentUser)
-      {
-      return currentUser.uploadAvat
-
-      }
-      else
-      {
-        return 0
-      }
+  function isUser() {
+    if(currentUser)
+    {
+      return currentUser.avatChoice
 
     }
+    else
+    {
+      return 0
+    }
+
+  }
+
+  function isUserAvatar() {
+    if(currentUser)
+    {
+      return currentUser.uploadAvat
+
+    }
+    else
+    {
+      return 0
+    }
+
+  }
 
 
   let choice=isUser();
@@ -173,36 +173,36 @@ export default function Header({
         avatChoice: c,
         uploadAvat: finalUpl
       }, {
-      headers: {
-        'Authorization': `Bearer ${oauth.access_token}`
-      },
-    })
-    console.log(nUser)
-    setCurrentUser(nUser)
+        headers: {
+          'Authorization': `Bearer ${oauth.access_token}`
+        },
+      })
+      console.log(nUser)
+      setCurrentUser(nUser)
 
-  }
+    }
 
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+    const convertBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
 
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
 
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    };
 
     const { getRootProps, getInputProps } = useDropzone({
-    multiple: false,
-    accept: "image/*",
-    onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
+      multiple: false,
+      accept: "image/*",
+      onDrop: (acceptedFiles) => {
+        setFiles(
+          acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -210,11 +210,11 @@ export default function Header({
       )
     },
   })
-    const images = files.map((file) => (
+  const images = files.map((file) => (
     <div key={file.name}>
-      <div>
-        <img src={file.preview} style={{ width: 300 }, {height: 200}}  alt="preview" />
-      </div>
+    <div>
+    <img src={file.preview} style={{ width: 300 }, {height: 200}}  alt="preview" />
+    </div>
     </div>
   ))
 
@@ -239,140 +239,140 @@ export default function Header({
       <div>
       {oauth.email}
       </div>
-       {(currentUser.avatChoice === 0 && currentUser.uploadAvat===0) ? (
-              <Gravatar //gravatar image with default parameters override
-                email={oauth.email}
-                size={50}
-                rating="pg"
-                default="monsterid"
-                className="CustomAvatar-image"
-                style={{ margin: '10px', borderRadius: '25px' }}
-                protocol="https://"
-              />
-            ) : (currentUser.avatChoice === 1 && currentUser.uploadAvat===0) ? (
-              <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
-            ) : (currentUser.avatChoice === 2 && currentUser.uploadAvat===0) ? (
-              <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
-            ) : (currentUser.avatChoice === 3 && currentUser.uploadAvat===0) ? (
-              <img src="https://img.icons8.com/color/48/000000/spyro.png" />
-            ) : (currentUser.avatChoice === 4 && currentUser.uploadAvat===0) ? (
-              <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
-            ) : (
-              <img src={currentUser.uploadAvat} style={{ width: 200}, {height: 100}} />
-            )
-            }
+      {(currentUser.avatChoice === 0 && currentUser.uploadAvat===0) ? (
+        <Gravatar //gravatar image with default parameters override
+        email={oauth.email}
+        size={50}
+        rating="pg"
+        default="monsterid"
+        className="CustomAvatar-image"
+        style={{ margin: '10px', borderRadius: '25px' }}
+        protocol="https://"
+        />
+      ) : (currentUser.avatChoice === 1 && currentUser.uploadAvat===0) ? (
+        <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
+      ) : (currentUser.avatChoice === 2 && currentUser.uploadAvat===0) ? (
+        <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
+      ) : (currentUser.avatChoice === 3 && currentUser.uploadAvat===0) ? (
+        <img src="https://img.icons8.com/color/48/000000/spyro.png" />
+      ) : (currentUser.avatChoice === 4 && currentUser.uploadAvat===0) ? (
+        <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
+      ) : (
+        <img src={currentUser.uploadAvat} style={{ width: 200}, {height: 100}} />
+      )
+    }
 
-<Button sx={{margin: 2, width: 80, color: red[800], "&:hover":{ backgroundColor: grey[200]}}}
-              onClick={() => {
-                setOpenSelection(true);
-                setFiles([]);
-              }}  >
-              Choose Avatar
-            </Button>
-            <Dialog open={openSelection} onClose={handleCloseSelection} fullWidth={true} maxWidth='850px'>
-              <DialogTitle>Choose an avatar among the selection</DialogTitle>
-              <DialogActions>
-                <Button onClick={handleCloseSelection}>Cancel</Button>
-                <Button
-                  onClick={() => {
-                    choice=0;
-                    uplAvat=0;
-                    onSubmitAvatar(0,0);
-                    setOpenSelection(false);
-                  }}
-                >Default Gravatar</Button>
-                <Gravatar //gravatar image with default parameters override
-                  email={oauth.email}
-                  size={50}
-                  rating="pg"
-                  default="monsterid"
-                  className="CustomAvatar-image"
-                  style={{ margin: '10px', borderRadius: '25px' }}
-                  protocol="https://"
-                />
-                <Button
-                  onClick={() => {
-                    choice=1;
-                    uplAvat=0;
-                    onSubmitAvatar(1,0);
-                    setOpenSelection(false);
-                  }}
-                >Avatar 1</Button>
-                <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
-                <Button
-                  onClick={() => {
-                    choice=2;
-                    uplAvat=0;
-                    onSubmitAvatar(2,0);
-                    setOpenSelection(false);
-                  }}
-                >Avatar 2</Button>
-                <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
-                <Button
-                  onClick={() => {
-                    choice=3;
-                    uplAvat=0;
-                    onSubmitAvatar(3,0);
-                    setOpenSelection(false);
-                  }}
-                >Avatar 3</Button>
-                <img src="https://img.icons8.com/color/48/000000/spyro.png" />
-                <Button
-                  onClick={() => {
-                    choice=4;
-                    uplAvat=0;
-                    onSubmitAvatar(4,0);
-                    setOpenSelection(false);
-                  }}
-                >Avatar 4</Button>
-                <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
-                      <div {...getRootProps()}>
-                        <input {...getInputProps()} />
-                        <Button>Upload file</Button>
-                        <div>{images}</div>
-                        </div>
-                        {files.length ?
-                      <Button
-                      onClick={()=>{
-                        choice=0;
-                        uplAvat=1;
-                        onSubmitAvatar(0,1);
-                        setOpenSelection(false);
-                      }}
-                      > Save</Button>
-                      :
-                      <span>
-                      </span>
-                    }
+    <Button sx={{margin: 2, width: 80, color: red[800], "&:hover":{ backgroundColor: grey[200]}}}
+    onClick={() => {
+      setOpenSelection(true);
+      setFiles([]);
+    }}  >
+    Choose Avatar
+    </Button>
+    <Dialog open={openSelection} onClose={handleCloseSelection} fullWidth={true} maxWidth='850px'>
+    <DialogTitle>Choose an avatar among the selection</DialogTitle>
+    <DialogActions>
+    <Button onClick={handleCloseSelection}>Cancel</Button>
+    <Button
+    onClick={() => {
+      choice=0;
+      uplAvat=0;
+      onSubmitAvatar(0,0);
+      setOpenSelection(false);
+    }}
+    >Default Gravatar</Button>
+    <Gravatar //gravatar image with default parameters override
+    email={oauth.email}
+    size={50}
+    rating="pg"
+    default="monsterid"
+    className="CustomAvatar-image"
+    style={{ margin: '10px', borderRadius: '25px' }}
+    protocol="https://"
+    />
+    <Button
+    onClick={() => {
+      choice=1;
+      uplAvat=0;
+      onSubmitAvatar(1,0);
+      setOpenSelection(false);
+    }}
+    >Avatar 1</Button>
+    <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
+    <Button
+    onClick={() => {
+      choice=2;
+      uplAvat=0;
+      onSubmitAvatar(2,0);
+      setOpenSelection(false);
+    }}
+    >Avatar 2</Button>
+    <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
+    <Button
+    onClick={() => {
+      choice=3;
+      uplAvat=0;
+      onSubmitAvatar(3,0);
+      setOpenSelection(false);
+    }}
+    >Avatar 3</Button>
+    <img src="https://img.icons8.com/color/48/000000/spyro.png" />
+    <Button
+    onClick={() => {
+      choice=4;
+      uplAvat=0;
+      onSubmitAvatar(4,0);
+      setOpenSelection(false);
+    }}
+    >Avatar 4</Button>
+    <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
+    <div {...getRootProps()}>
+    <input {...getInputProps()} />
+    <Button>Upload file</Button>
+    <div>{images}</div>
+    </div>
+    {files.length ?
+      <Button
+      onClick={()=>{
+        choice=0;
+        uplAvat=1;
+        onSubmitAvatar(0,1);
+        setOpenSelection(false);
+      }}
+      > Save</Button>
+      :
+      <span>
+      </span>
+    }
 
 
-              </DialogActions>
-            </Dialog>
-      <Tooltip title="Settings">
-      <IconButton
-      onClick={onClickSettings}
-      size="large"
-      sx={{"&:hover": {background: grey[200]}}}>
-      <SettingsIcon fontSize="inherit"/>
-      </IconButton>
-      </Tooltip>
-      { currentUser &&
+    </DialogActions>
+    </Dialog>
+    <Tooltip title="Settings">
+    <IconButton
+    onClick={onClickSettings}
+    size="large"
+    sx={{"&:hover": {background: grey[200]}}}>
+    <SettingsIcon fontSize="inherit"/>
+    </IconButton>
+    </Tooltip>
+    { currentUser &&
       <Settings
       dialogOpen={openSettings}
       handleCloseDialog={() =>setOpenSettings(false)}/>
-      }
-      <Tooltip title="Logout">
-      <IconButton onClick={onClickLogout}
-      size="large"
-      css={styles.logout}
-      sx={{"&:hover": {background: grey[200]}}}>
-      <LogoutIcon fontSize="inherit"/>
-      </IconButton>
-      </Tooltip>
-      </span>
-      :
-      <span css={styles.user}> new user</span>
     }
-    </header>
-  );
+    <Tooltip title="Logout">
+    <IconButton onClick={onClickLogout}
+    size="large"
+    css={styles.logout}
+    sx={{"&:hover": {background: grey[200]}}}>
+    <LogoutIcon fontSize="inherit"/>
+    </IconButton>
+    </Tooltip>
+    </span>
+    :
+    <span css={styles.user}> new user</span>
+  }
+  </header>
+);
 }

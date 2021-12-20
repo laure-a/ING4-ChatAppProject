@@ -22,8 +22,8 @@ const styles = {
 export default function Footer() {
   return (
     <footer style={styles.footer}>
-      <img css={styles.logo} src="/logo_color.png" alt="LogoColor"/>
-      <span> Made by Laure Audouy and Thomas Poulain, webtech, 2021 </span>
+    <img css={styles.logo} src="/logo_color.png" alt="LogoColor"/>
+    <span> Made by Laure Audouy and Thomas Poulain, webtech, 2021 </span>
     </footer>
   )
 }
