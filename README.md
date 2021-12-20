@@ -125,7 +125,7 @@ Application development
   ```
   https://www.youtube.com/watch?v=eftyBaoDkNA
   ```
- We managed to do it and to select only images thanks to the accept function. We had to run the following command in the front-end to be able to define a dropzone in our selection:
+   We managed to do it and to select only images thanks to the accept function. We had to run the following command in the front-end to be able to define a dropzone in our selection:
   ```
   #adds react-gravatar in the dependencies of our package.json file
   npm install react-gravatar
