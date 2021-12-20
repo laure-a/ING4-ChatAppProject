@@ -52,7 +52,7 @@ export default function Channels() {
   const {
     oauth,
     channels, setChannels,
-    currentUser, setCurrentUser
+    currentUser
   } = useContext(Context)
   const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);

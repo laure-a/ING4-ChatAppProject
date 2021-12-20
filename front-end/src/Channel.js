@@ -12,7 +12,6 @@ import List from './channel/List'
 import Context from './Context'
 import { useNavigate, useParams } from 'react-router-dom'
 
-
 const useStyles = (theme) => ({
   root: {
     height: '100%',

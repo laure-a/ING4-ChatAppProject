@@ -4,31 +4,17 @@ import { useContext, useState } from 'react';
 import { useTheme } from '@mui/styles';
 import { useCookies } from 'react-cookie'
 import Settings from './Settings'
-import { IconButton, Link, Button } from '@mui/material';
+import { IconButton, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Context from './Context';
 import Gravatar from 'react-gravatar'
 import LogoutIcon from '@mui/icons-material/Logout';
-import { red, grey, amber } from '@mui/material/colors';
+import { red, grey } from '@mui/material/colors';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Tooltip from '@mui/material/Tooltip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { styled } from '@mui/material/styles';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
 
@@ -84,8 +70,6 @@ const useStyles = (theme) => ({
 
   }
 })
-
-
 
 export default function Header({
   drawerToggleListener
@@ -218,9 +202,6 @@ export default function Header({
     </div>
   ))
 
-
-
-  console.log(currentUser)
   return (
     <header css={styles.header}>
     <IconButton
@@ -344,8 +325,6 @@ export default function Header({
       <span>
       </span>
     }
-
-
     </DialogActions>
     </Dialog>
     <Tooltip title="Settings">
