@@ -146,6 +146,10 @@ export default function Header({
   const drawerToggle = (e) => {
     setDrawerVisible(!drawerVisible)
   }
+
+function valuetext(value) {
+  return `${value}°C`;
+}
   const onClickLogout = (e) => {
     e.stopPropagation()
     setOauth(null)
@@ -193,6 +197,18 @@ export default function Header({
       </Tooltip>
       <Dialog open={openSettings} onClose={closeSettings}>
        <DialogTitle>Account settings</DialogTitle>
+      <FormLabel css={{paddingTop: 20, paddingBottom: 5}} component="legend">Font size</FormLabel>
+     <Slider
+       aria-label="Fontsize"
+       defaultValue={18}
+       getAriaValueText={valuetext}
+       valueLabelDisplay="auto"
+       step={2}
+       marks
+       min={10}
+       max={30}
+     />
+   </Box>
        </DialogContent>
        <DialogActions>
        </DialogActions>
