@@ -130,9 +130,9 @@ Application development
   #adds react-gravatar in the dependencies of our package.json file
   npm install react-gravatar
   ```
-  We were thank able to load an image but the format received was not usable. We had to convert it to base64 to make it usable, to display it in the front-end and to store it in the back-end. We used the code on the following website to help us to the conversion: 
+  We were then able to load an image but the format received was not usable. We had to convert it to base64 to make it usable, to display it in the front-end and to store it in the back-end. We used the code on the following website to help us to the conversion: 
   ```
-  https://www.youtube.com/watch?v=eftyBaoDkNA
+  https://www.codegrepper.com/code-examples/javascript/const+toBase64+%3D+file+%3D%3E+new+Promise%28%28resolve%2C+reject%29+%3D%3E+%7B+const+reader+%3D+new+FileReader%28%29+reader.readAsDataURL%28file%29+reader.onload+%3D+%28%29+%3D%3E+resolve%28reader.result%29+reader.onerror+%3D+error+%3D%3E+reject%28error%29+%7D%29
   ```
   This format was usable and we were able to display the image in the header. But we had an issue to store it in the database. The base64 argument was too long so we had to run the following command to be able to store it in the database:
   ```
@@ -141,7 +141,7 @@ Application development
   ```
   We created a variable in our back-end to make it possible to store very long requests. Then, we could store our uploaded image in the back-end as well as in the front-end.
  
- Mark: 5/6
+  Mark: 5/6
  
 ## Bonus
 
