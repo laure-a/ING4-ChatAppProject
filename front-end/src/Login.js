@@ -155,12 +155,8 @@ const LoadToken = ({
               'Authorization': `Bearer ${data.access_token}`
             }
           })
-          console.log(users)
           let found = false
           for (let i=0; i<users.length; i++){
-            console.log(users[i].username);
-            console.log(data.email);
-
             if(users[i].username === data.email){
               found=true
               setCurrentUser(users[i])
@@ -223,7 +219,6 @@ export default function Login({
       const codeVerifier = base64URLEncode(crypto.randomBytes(32))
       console.log('set code_verifier', codeVerifier)
       setCookie('code_verifier', codeVerifier)
-      console.log("shohabibi")
       return (
         <Redirect codeVerifier={codeVerifier} config={config} css={styles.root} />
       )
@@ -234,7 +229,6 @@ export default function Login({
       )
     }
   }else{ // yes: we are coming from an oauth server
-    console.log("coucouuuuu")
     return (
       <LoadToken
         code={code}

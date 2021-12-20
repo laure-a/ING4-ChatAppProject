@@ -166,7 +166,10 @@ export default function Header({
       `http://localhost:3001/users/${currentUser.id}`
       , {
         id: currentUser.id,
-        email: currentUser.email,
+        username: `${currentUser.username}`,
+        language: currentUser.language,
+        fontsize: currentUser.fontsize,
+        dayMode: currentUser.dayMode,
         avatChoice: c,
         uploadAvat: finalUpl
       }, {
@@ -259,7 +262,7 @@ export default function Header({
             )
             }
 
-<Button
+<Button sx={{margin: 2, width: 80, color: red[800], "&:hover":{ backgroundColor: grey[200]}}}
               onClick={() => {
                 setOpenSelection(true);
                 setFiles([]);

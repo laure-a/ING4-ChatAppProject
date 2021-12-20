@@ -96,7 +96,9 @@ export default function Settings({dialogOpen, handleCloseDialog}) {
 
   const changeLanguage = (event) => {
     setLanguage(event.target.value);
-    console.log(language)
+  };
+  const changeFontsize = (event) => {
+    setFontsize(event.target.value);
   };
   const onSave = async () => {
     const {data: changeUser} = await axios.put(
@@ -107,6 +109,8 @@ export default function Settings({dialogOpen, handleCloseDialog}) {
       language: language,
       fontsize: fontsize,
       dayMode: dayMode,
+      avatChoice: currentUser.avatChoice,
+      uploadAvat: currentUser.uploadAvat
     },{
     headers: {
       'Authorization': `Bearer ${oauth.access_token}`
@@ -121,16 +125,15 @@ export default function Settings({dialogOpen, handleCloseDialog}) {
     <DialogContent css={{flexDirection: "column", display: "flex"}}>
     <FormControlLabel
      control={<ModeSwitch
-       sx={{ m: 1 }}
+       sx={{ m: 1 }}/>}
        checked={dayMode}
-     onChange={()=>setDayMode(!dayMode)}/>}
+     onChange={()=>setDayMode(!dayMode)}
      label={dayMode? "Day mode" : "Night mode"}
    />
    <FormControl component="fieldset">
    <FormLabel css={{paddingTop: 20, paddingBottom: 5, color: amber[900]}} component="legend">Language</FormLabel>
    <RadioGroup
      aria-label="language"
-     defaultValue={language}
      value={language}
      onChange={changeLanguage}
      name="radio-buttons-group">
@@ -143,8 +146,9 @@ export default function Settings({dialogOpen, handleCloseDialog}) {
    <FormLabel css={{paddingTop: 20, paddingBottom: 5, color: amber[900]}} component="legend">Font size</FormLabel>
   <Slider
     aria-label="Fontsize"
-    defaultValue={18}
     css={{color: red[800]}}
+    value={fontsize}
+    onChange={changeFontsize}
     getAriaValueText={valuetext}
     valueLabelDisplay="auto"
     step={2}
