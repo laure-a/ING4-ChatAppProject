@@ -205,7 +205,7 @@ const scroll = () => {
     setNewMessage(e.target.value)
   }
   
-  const handleCloseUser = () => {
+    const handleCloseUser = () => {
     setInputValueUser([])
     setOpenAddUser(false);
   };

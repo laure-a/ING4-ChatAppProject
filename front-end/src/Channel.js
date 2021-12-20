@@ -12,6 +12,7 @@ import List from './channel/List'
 import Context from './Context'
 import { useNavigate, useParams } from 'react-router-dom'
 
+
 const useStyles = (theme) => ({
   root: {
     height: '100%',
@@ -58,10 +59,6 @@ export default function Channel() {
         messages[i]=newmessage
       }
     }
-    // const index =messages.findIndex(message => message.creation===curCreation)
-    // const newMessages=messages.splice(index,1, newmessage)
-    // setMessages(newMessages)
-    // console.log(newMessages)
   }
   useEffect( () => {
     const fetch = async () => {

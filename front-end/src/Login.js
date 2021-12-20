@@ -14,6 +14,7 @@ import Context from './Context'
 import {
   useNavigate
 } from "react-router-dom";
+import { useThemeProps } from '@mui/system';
 
 const base64URLEncode = (str) => {
   return str.toString('base64')
@@ -131,7 +132,7 @@ const LoadToken = ({
   removeCookie,
   setOauth
 }) => {
-  const {oauth} = useContext(Context)
+  const {oauth, currentUser, setCurrentUser}= useContext(Context)
   const styles = useStyles(useTheme())
   const navigate = useNavigate();
   useEffect( () => {
@@ -154,20 +155,29 @@ const LoadToken = ({
               'Authorization': `Bearer ${data.access_token}`
             }
           })
+          console.log(users)
           let found = false
           for (let i=0; i<users.length; i++){
+            console.log(users[i].username);
+            console.log(data.email);
+
             if(users[i].username === data.email){
               found=true
+              setCurrentUser(users[i])
             }
           }
           if(!found)
           {
             const newUser = await axios.post(`http://localhost:3001/users`,
-              { username : data.email },
+              { username : data.email,
+                 avatChoice: 0,
+                  uploadAvat: 0,
+                },
               { headers: {
                 'Authorization': `Bearer ${data.access_token}`
               }
             });
+            setCurrentUser(newUser.data)
           }
         } catch (e) {
           console.error(e)
@@ -179,9 +189,13 @@ const LoadToken = ({
     }
     fetch()
   })
-  return (
-    <div css={styles.root}>Loading tokens</div>
-  )
+   return (
+    
+     <span>
+       <div css={styles.root}>Loading tokens</div> 
+     </span>
+    
+   )
 }
 
 export default function Login({
@@ -206,16 +220,18 @@ export default function Login({
       const codeVerifier = base64URLEncode(crypto.randomBytes(32))
       console.log('set code_verifier', codeVerifier)
       setCookie('code_verifier', codeVerifier)
+      console.log("shohabibi")
       return (
         <Redirect codeVerifier={codeVerifier} config={config} css={styles.root} />
       )
     }else{ // yes: user is already logged in, great, is is working
+      console.log("thyvia mon bb")
       return (
         <Tokens oauth={oauth} css={styles.root} />
       )
     }
   }else{ // yes: we are coming from an oauth server
-    console.log('get code_verifier', cookies.code_verifier)
+    console.log("coucouuuuu")
     return (
       <LoadToken
         code={code}
