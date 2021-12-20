@@ -134,12 +134,12 @@ Application development
   ```
   https://www.youtube.com/watch?v=eftyBaoDkNA
   ```
- This format was usable and we were able to display the image in the header. But we had an issue to store it in the database. The base64 argument was too long so we had to run the following command to be able to store it in the database:
+  This format was usable and we were able to display the image in the header. But we had an issue to store it in the database. The base64 argument was too long so we had to run the following command to be able to store it in the database:
   ```
   #adds react-gravatar in the dependencies of our package.json file
   npm install body-parser
   ```
- We created a variable in our back-end to make it possible to store very long requests. Then, we could store our uploaded image in the back-end as well as in the front-end.
+  We created a variable in our back-end to make it possible to store very long requests. Then, we could store our uploaded image in the back-end as well as in the front-end.
  
  Mark: 5/6
  
