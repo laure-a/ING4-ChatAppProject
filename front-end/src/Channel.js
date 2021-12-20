@@ -12,6 +12,7 @@ import List from './channel/List'
 import Context from './Context'
 import { useNavigate, useParams } from 'react-router-dom'
 
+
 const useStyles = (theme) => ({
   root: {
     height: '100%',
@@ -50,6 +51,15 @@ export default function Channel() {
     const newMessages = messages.filter(message => message.creation !== creation)
     setMessages(newMessages)
   }
+  const updateMessage = (newmessage, curCreation)=>{
+    for(let i=0; i<messages.length; i++)
+    {
+      if(messages[i].creation=== curCreation)
+      {
+        messages[i]=newmessage
+      }
+    }
+  }
   useEffect( () => {
     const fetch = async () => {
       try{
@@ -86,6 +96,7 @@ export default function Channel() {
         onScrollDown={onScrollDown}
         ref={listRef}
         deleteMessage={deleteMessage}
+        updateMessage={updateMessage}
       />
       <Form addMessage={addMessage} channel={channel} />
       <Fab

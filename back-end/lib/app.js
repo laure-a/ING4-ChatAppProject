@@ -1,3 +1,5 @@
+var bodyParser = require('body-parser')
+
 
 const db = require('./db')
 const express = require('express')
@@ -5,6 +7,8 @@ const cors = require('cors')
 const authenticator = require('./authenticator')
 
 const app = express()
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 const authenticate = authenticator({
   test_payload_email: process.env['TEST_PAYLOAD_EMAIL'],
   jwks_uri: 'http://127.0.0.1:5556/dex/keys'
@@ -65,6 +69,12 @@ app.delete('/channels/:id/messages', async(req,res)=> {
   res.status(201).json(message)
 })
 
+app.put('/channels/:id/messages', async(req,res)=> {
+  console.log(req.body)
+  const message=await db.messages.update(req.params.id, req.body)
+  res.status(201).json(message)
+})
+
 // Users
 
 app.get('/users', async (req, res) => {
@@ -78,11 +88,13 @@ app.post('/users', async (req, res) => {
 })
 
 app.get('/users/:id', async (req, res) => {
+  console.log(req.body)
   const user = await db.users.get(req.params.id)
   res.json(user)
 })
 
 app.put('/users/:id', async (req, res) => {
+  console.log(req.body)
   const user = await db.users.update(req.body)
   res.json(user)
 })

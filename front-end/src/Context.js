@@ -15,9 +15,11 @@ export const Provider = ({
   const [channels, setChannels] = useState([])
   const [currentUser, setCurrentUser] = useState({})
   const [currentChannel, setCurrentChannel] = useState(null)
+  const [currentUser, setCurrentUser] = useState(cookies.currentUser)
   return (
     <Context.Provider value={{
       oauth: oauth,
+      currentUser: currentUser,
       setOauth: (oauth) => {
         if(oauth){
           const payload = JSON.parse(
@@ -33,6 +35,15 @@ export const Provider = ({
           removeCookie('oauth')
         }
         setOauth(oauth)
+      },
+
+      setCurrentUser: (currentUser) => {
+        if(currentUser){
+          setCookie('currentUser', currentUser)
+        }else{
+          removeCookie('currentUser')
+        }
+        setCurrentUser(currentUser)
       },
       channels: channels,
       drawerVisible: drawerVisible,
