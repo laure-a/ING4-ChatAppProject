@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useContext, useState } from 'react';
+import Settings from './Settings'
 // Layout
 import { useTheme } from '@mui/styles';
 import { IconButton, Link, Button } from '@mui/material';
@@ -81,75 +82,22 @@ const useStyles = (theme) => ({
   }
 })
 
-const IOSSwitch = styled((props) => (
-  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
-  width: 42,
-  height: 26,
-  padding: 0,
-  '& .MuiSwitch-switchBase': {
-    padding: 0,
-    margin: 2,
-    transitionDuration: '300ms',
-    '&.Mui-checked': {
-      transform: 'translateX(16px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        //backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
-        backgroundColor: amber[500],
-        opacity: 1,
-        border: 0,
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
-    },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
-      border: '6px solid #fff',
-    },
-    '&.Mui-disabled .MuiSwitch-thumb': {
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
-    },
-    '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    boxSizing: 'border-box',
-    width: 22,
-    height: 22,
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 26 / 2,
-    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
-    opacity: 1,
-    transition: theme.transitions.create(['background-color'], {
-      duration: 500,
-    }),
-  },
-}));
 
 
 export default function Header({
   drawerToggleListener
 }) {
   const [openSettings, setOpenSettings] = useState(false);
+
   const styles = useStyles(useTheme())
   const {
     oauth, setOauth,
-    drawerVisible, setDrawerVisible
+    drawerVisible, setDrawerVisible, currentUser
   } = useContext(Context)
   const drawerToggle = (e) => {
     setDrawerVisible(!drawerVisible)
   }
 
-function valuetext(value) {
-  return `${value}°C`;
-}
   const onClickLogout = (e) => {
     e.stopPropagation()
     setOauth(null)
@@ -157,9 +105,7 @@ function valuetext(value) {
   const onClickSettings = () => {
     setOpenSettings(true);
   };
-  const closeSettings = () => {
-    setOpenSettings(false);
-  };
+
   return (
     <header css={styles.header}>
     <IconButton
@@ -195,47 +141,11 @@ function valuetext(value) {
       <SettingsIcon fontSize="inherit"/>
       </IconButton>
       </Tooltip>
-      <Dialog open={openSettings} onClose={closeSettings}>
-       <DialogTitle>Account settings</DialogTitle>
-       <DialogContent css={{flexDirection: "column", display: "flex"}}>
-       <FormControlLabel
-        control={<IOSSwitch sx={{ m: 1 }} defaultUnchecked />}
-        label="Night mode"
-      />
-      <FormControl component="fieldset">
-      <FormLabel css={{paddingTop: 20, paddingBottom: 5}} component="legend">Language</FormLabel>
-      <RadioGroup
-        aria-label="language"
-        defaultValue="English"
-        name="radio-buttons-group">
-        <FormControlLabel value="english" control={<Radio />} label="English" />
-        <FormControlLabel value="french" control={<Radio />} label="Français" />
-        <FormControlLabel value="chinese" control={<Radio />} label="中文" />
-      </RadioGroup>
-    </FormControl>
-    <Box sx={{ width: 300 }}>
-      <FormLabel css={{paddingTop: 20, paddingBottom: 5}} component="legend">Font size</FormLabel>
-     <Slider
-       aria-label="Fontsize"
-       defaultValue={18}
-       getAriaValueText={valuetext}
-       valueLabelDisplay="auto"
-       step={2}
-       marks
-       min={10}
-       max={30}
-     />
-   </Box>
-       </DialogContent>
-       <DialogActions>
-         <Button sx={{
-           borderColor:red[800],
-           color:red[800],
-           "&:hover": {borderColor: grey[200], background: grey[200] }}}
-          variant="outlined"
-          onClick={closeSettings}>Cancel changes</Button>
-       </DialogActions>
-     </Dialog>
+      { currentUser &&
+      <Settings
+      dialogOpen={openSettings}
+      handleCloseDialog={() =>setOpenSettings(false)}/>
+      }
       <Tooltip title="Logout">
       <IconButton onClick={onClickLogout}
       size="large"

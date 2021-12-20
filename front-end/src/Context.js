@@ -13,6 +13,7 @@ export const Provider = ({
   const [oauth, setOauth] = useState(cookies.oauth)
   const [drawerVisible, setDrawerVisible] = useState(false)
   const [channels, setChannels] = useState([])
+  const [currentUser, setCurrentUser] = useState({})
   const [currentChannel, setCurrentChannel] = useState(null)
   return (
     <Context.Provider value={{
@@ -38,6 +39,8 @@ export const Provider = ({
       setDrawerVisible: setDrawerVisible,
       setChannels: setChannels,
       currentChannel: currentChannel,
+      setCurrentUser: setCurrentUser,
+      currentUser: currentUser,
       setCurrentChannel: (channelId) => {
         const channel = channels.find( channel => channel.id === channelId)
         setCurrentChannel(channel)

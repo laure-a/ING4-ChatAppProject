@@ -131,7 +131,7 @@ const LoadToken = ({
   removeCookie,
   setOauth
 }) => {
-  const {oauth} = useContext(Context)
+  const {oauth, currentUser, setCurrentUser} = useContext(Context)
   const styles = useStyles(useTheme())
   const navigate = useNavigate();
   useEffect( () => {
@@ -158,16 +158,22 @@ const LoadToken = ({
           for (let i=0; i<users.length; i++){
             if(users[i].username === data.email){
               found=true
+              setCurrentUser(users[i])
             }
           }
           if(!found)
           {
             const newUser = await axios.post(`http://localhost:3001/users`,
-              { username : data.email },
+              { username : data.email,
+                language: "english",
+                fontsize: 18,
+                dayMode: true,
+              },
               { headers: {
                 'Authorization': `Bearer ${data.access_token}`
               }
-            });
+            })
+            setCurrentUser(newUser)
           }
         } catch (e) {
           console.error(e)
