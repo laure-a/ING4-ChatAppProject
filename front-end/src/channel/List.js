@@ -200,41 +200,9 @@ export default forwardRef(({
               setNewMessage(null);
             };
 
-<<<<<<< Updated upstream
             const handleChangeUpdate = (e) => {
               setNewMessage(e.target.value)
             }
-=======
-
-
-
-
-  const handleCloseUser = () => {
-    setInputValueUser([])
-    setOpenAddUser(false);
-  };
-const handleClickOpenIcon = () => {
-    const usersTempo = usersListDb.filter(username =>
-      !channel.usersList.some(userL => userL === username.label))
-    setUsersDisplay(usersTempo)
-    setOpenAddUser(true);
-  }
-  useLayoutEffect( () => {
-    const rootNode = rootEl.current // react-hooks/exhaustive-deps
-    const handleScroll = () => {
-      if (throttleTimeout.current === null) {
-        throttleTimeout.current = setTimeout(() => {
-          throttleTimeout.current = null
-          const { scrollTop, offsetHeight, scrollHeight } = rootNode // react-hooks/exhaustive-deps
-          onScrollDown(scrollTop + offsetHeight < scrollHeight)
-        }, 200)
-      }
-    }
-    handleScroll()
-    rootNode.addEventListener('scroll', handleScroll)
-    return () => rootNode.removeEventListener('scroll', handleScroll)
-  })
->>>>>>> Stashed changes
 
             const handleCloseUser = () => {
               setInputValueUser([])
