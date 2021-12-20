@@ -11,12 +11,10 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { red, grey } from '@mui/material/colors';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import Avatar from '@mui/material/Avatar';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
+import CheckIcon from '@mui/icons-material/Check';
 const useStyles = (theme) => ({
   header: {
     height: 75,
@@ -90,25 +88,32 @@ export default function Header({
     setOpenSelection(false);
   };
 
-  const handleCloseUpload = () => {
-    setOpenUpload(false);
-  };
-
   let choice
-
+  let uplAvat
+  let finalUpl
   const onSubmitAvatar = async () => {
+    if (uplAvat===0)
+    {
+      finalUpl=0
+    }
+    else
+    {
+      finalUpl= await convertBase64(files[0])
+    }
     const { data: nUser } = await axios.put(
       `http://localhost:3001/users/${currentUser.id}`
       , {
         id: currentUser.id,
         email: currentUser.email,
-        avatchoice: choice,
+        avatChoice: choice,
+        uploadAvat: finalUpl
       }, {
       headers: {
         'Authorization': `Bearer ${oauth.access_token}`
       },
     })
     setCurrentUser(nUser)
+    
   }
 
   const [files, setFiles] = useState([])
@@ -149,9 +154,9 @@ export default function Header({
     });
   };
   const [openSelection, setOpenSelection] = useState(false);
-  const [openUpload, setOpenUpload] = useState(false);
+
     return (
-      
+
     <header css={styles.header}>
       <IconButton
         color="inherit"
@@ -164,13 +169,15 @@ export default function Header({
       <img css={styles.logoIcon} src="/logo_clear.png" alt="LogoClear" />
       <h1 css={styles.logo}> BeeTalky </h1>
       {
+        console.log(currentUser.avatChoice),
+        console.log(currentUser.uploadAvat),
+ 
         oauth ?
           <span css={styles.user}>
             <div>
               {oauth.email}
             </div>
-            {console.log(currentUser.avatchoice)}
-            {currentUser.avatchoice === 0 ? (
+            {(currentUser.avatChoice === 0 && currentUser.uploadAvat===0) ? (
               <Gravatar //gravatar image with default parameters override
                 email={oauth.email}
                 size={50}
@@ -180,18 +187,20 @@ export default function Header({
                 style={{ margin: '10px', borderRadius: '25px' }}
                 protocol="https://"
               />
-            ) : currentUser.avatchoice === 1 ? (
+            ) : (currentUser.avatChoice === 1 && currentUser.uploadAvat===0) ? (
               <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
-            ) : currentUser.avatchoice === 2 ? (
+            ) : (currentUser.avatChoice === 2 && currentUser.uploadAvat===0) ? (
               <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
-            ) : currentUser.avatchoice === 3 ? (
+            ) : (currentUser.avatChoice === 3 && currentUser.uploadAvat===0) ? (
               <img src="https://img.icons8.com/color/48/000000/spyro.png" />
-            ) : currentUser.avatchoice === 4 ? (
+            ) : (currentUser.avatChoice === 4 && currentUser.uploadAvat===0) ? (
               <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
             ) : (
-              <img src="https://img.icons8.com/ios/50/000000/question-mark.png" />
+              <img src={currentUser.uploadAvat} style={{ width: "50px" }} />
             )
             }
+     
+
             <Button
               onClick={() => {
                 setOpenSelection(true);
@@ -205,7 +214,8 @@ export default function Header({
                 <Button onClick={handleCloseSelection}>Cancel</Button>
                 <Button
                   onClick={() => {
-                    choice = 0;
+                    choice=0;
+                    uplAvat=0;
                     onSubmitAvatar();
                     setOpenSelection(false);
                   }}
@@ -221,7 +231,8 @@ export default function Header({
                 />
                 <Button
                   onClick={() => {
-                    choice = 1;
+                    choice=1;
+                    uplAvat=0;
                     onSubmitAvatar();
                     setOpenSelection(false);
                   }}
@@ -229,7 +240,8 @@ export default function Header({
                 <img src="https://img.icons8.com/officel/40/000000/avatar.png" />
                 <Button
                   onClick={() => {
-                    choice = 2;
+                    choice=2;
+                    uplAvat=0;
                     onSubmitAvatar();
                     setOpenSelection(false);
                   }}
@@ -237,7 +249,8 @@ export default function Header({
                 <img src="https://img.icons8.com/external-flat-icons-pause-08/64/000000/external-avatar-farm-and-garden-flat-icons-pause-08.png" />
                 <Button
                   onClick={() => {
-                    choice = 3;
+                    choice=3;
+                    uplAvat=0;
                     onSubmitAvatar();
                     setOpenSelection(false);
                   }}
@@ -245,30 +258,34 @@ export default function Header({
                 <img src="https://img.icons8.com/color/48/000000/spyro.png" />
                 <Button
                   onClick={() => {
-                    choice = 4;
+                    choice=4;
+                    uplAvat=0;
                     onSubmitAvatar();
                     
                     setOpenSelection(false);
                   }}
                 >Avatar 4</Button>
                 <img src="https://img.icons8.com/external-photo3ideastudio-lineal-color-photo3ideastudio/64/000000/external-ninja-japan-photo3ideastudio-lineal-color-photo3ideastudio.png" />
-                <div>
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <Button>Upload file</Button>
                         <div>{images}</div>
+                        </div>
                         {files.length ?
                       <Button
                       onClick={()=>{
+                        choice=0;
+                        uplAvat=1;
+                        onSubmitAvatar();
                         setOpenSelection(false);
                       }}
-                      >  Validate</Button>
+                      > Save</Button>
                       :
-                      <span></span>
+                      <span>
+                      </span>
                     } 
 
-                      </div>
-                    </div>
+
               </DialogActions>
             </Dialog>
             <IconButton onClick={onClickLogout}
