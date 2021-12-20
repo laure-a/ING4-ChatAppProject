@@ -201,4 +201,5 @@ Application development
 ## Bonus
 
 - Alert message to notify the user that the channel has successfully been created is displayed at the bottom left of the screen during a few seconds or less if the user closes it manually. 
-- Textfields have been improved: one was overrided for the message typing section (form) and the ones for adding users offer a lot of information to the user : good UX.
+- Textfields have been improved: one was overrided for the message typing section (form) and the ones for adding users offer a lot of information to the user : good UX. 
+- For test purposes, another user was added to the dex config file: login: student@example.com password: password
