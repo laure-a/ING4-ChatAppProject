@@ -6,6 +6,7 @@ import { useTheme } from '@mui/styles';
 const useStyles = (theme) => ({
   root: {
     background: theme.palette.background.default,
+    color: "black",
     overflow: 'hidden',
     flex: '1 1 auto',
     display: 'flex',

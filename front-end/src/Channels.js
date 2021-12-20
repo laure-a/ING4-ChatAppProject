@@ -19,6 +19,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { red } from '@mui/material/colors';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
+import Tooltip from '@mui/material/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 // Local
 import Context from './Context'
 import {useNavigate} from 'react-router-dom'
@@ -53,6 +56,7 @@ export default function Channels() {
   } = useContext(Context)
   const [channelName, setChannelName] = useState('')
   const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
   const [usersListDb, setUsersListDb] = useState([]);
   const [inputValueUser, setInputValueUser] = useState([]);
 
@@ -65,167 +69,185 @@ export default function Channels() {
           }
         })
         let tempo = []
-        let already = false
         for (let i=0; i<users.length; i++){
           if(users[i].username!==oauth.email)
           tempo.push({label: users[i].username})}
-        setUsersListDb(tempo)
-      }catch(err){
-        console.error(err)
+          setUsersListDb(tempo)
+        }catch(err){
+          console.error(err)
+        }
       }
-    }
-    fetch()
-  }, [])
+      fetch()
+    }, [])
 
-  const onSubmit = async () => {
-    const tempo = inputValueUser.map(username => {
-     return username.label
-   } )
-    const tempoUsersList= [oauth.email].concat(tempo)
-    const {data: channel} = await axios.post(
-      `http://localhost:3001/channels`
-    , {
-      name: channelName,
-      owner: `${oauth.email}`,
-      usersList: tempoUsersList,
-    },{
-    headers: {
-      'Authorization': `Bearer ${oauth.access_token}`
-    }})
-    addChannel(channel)
-    setChannelName('')
-    handleClose()
-  }
-  const handleChange = (e) => {
-    setChannelName(e.target.value)
-  }
-  const addChannel = (channel) => {
-    setChannels([...channels, channel])
-  }
-  const handleClickOpen = () => {
-    setOpen(true);
-    console.log(currentUser)
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const naviate = useNavigate();
-  useEffect( () => {
-    const fetch = async () => {
-      try{
-        const {data: channels} = await axios.get('http://localhost:3001/channels', {
+    const onSubmit = async () => {
+      const tempo = inputValueUser.map(username => {
+        return username.label
+      } )
+      const tempoUsersList= [oauth.email].concat(tempo)
+      const {data: channel} = await axios.post(
+        `http://localhost:3001/channels`
+        , {
+          name: channelName,
+          owner: `${oauth.email}`,
+          usersList: tempoUsersList,
+        },{
           headers: {
             'Authorization': `Bearer ${oauth.access_token}`
-          }
-          ,
-          params: {
-            connectedUser: `${oauth.email}` }})
-            setChannels(channels)
-          }catch(err){
-            console.error(err)
-          }
+          }})
+          addChannel(channel)
+          handleClose()
+          setOpenSuccess(true)
         }
-        fetch()
-      }, [oauth, setChannels])
-  return (
-    <ul css={styles.root}>
-      <li css={styles.channel}>
-      <Link to="/channels" component={RouterLink}>
-      <Button startIcon={<HomeIcon />} variant="contained"
-      sx={{
-        paddingLeft: 2,
-        flexDirection: "line",
-        display: "flex",
-        justifyContent: "left",
-        width: 199,
-        height: 40,
-        color: "black",
-        borderRadius: 0,
-        backgroundColor: "#ffae00",
-        "&:hover": {
-          background: "#e09808"}
-      }}
-      > Welcome
-      </Button>
-      </Link>
-      <div css={styles.titleContainer}>
-      <h3 css={styles.title}> Channels </h3>
-      <div>
-      <IconButton
-      onClick={handleClickOpen}
-      css={styles.addButton}>
-      <AddCircleIcon fontSize="inherit"/>
-      </IconButton>
-      <Dialog open={open} onClose={handleClose}>
-       <DialogTitle>Create a new channel</DialogTitle>
-       <DialogContent>
-         <DialogContentText>
-           To create a new channel, please enter its name and members.
-           Then send or cancel the form by clicking on the
-           corresponding button.
-         </DialogContentText>
-         <TextField
-           margin="dense"
-           id="name"
-           label="Channel name"
-           fullWidth
-           variant="standard"
-           required
-           value={channelName}
-           onChange={handleChange}
-         />
-         <Stack spacing={3} sx={{ width: 400 }}>
-         <Autocomplete
-         multiple
-         fullWidth
-         disablePortal
-         id="combo-box-users"
-         options={usersListDb}
-         renderInput={(params) => <TextField {...params}
-         variant="standard"
-         label="User emails"/>}
-         value={inputValueUser}
-         onChange={(event, inputValueUser) => {
-           setInputValueUser(inputValueUser);
-         }}
-         />
-          </Stack>
-       </DialogContent>
-       <DialogActions>
-         <Button onClick={handleClose}>Cancel</Button>
-         <Button onClick={onSubmit}>Send</Button>
-       </DialogActions>
-     </Dialog>
-     </div>
-      </div>
-      </li>
-      { channels.map( (channel, i) => (
-        <li key={i} css={styles.channel_button}>
-          <Button
-          sx={{
-            paddingLeft: 2,
-            flexDirection: "line",
-            display: "flex",
-            justifyContent: "left",
-            width: 199,
-            height: 40,
-            color: "black",
-            borderRadius: 0,
-            backgroundColor: "#ffae00",
-            "&:hover": {
-              background: "#e09808"}
-          }}
-            href={`/channels/${channel.id}`}
-            onClick={ (e) => {
-              console.log(channel.usersList);
-              e.preventDefault()
-              naviate(`/channels/${channel.id}`)
-            }}
-          >
-            {channel.name}
-          </Button>
-        </li>
-      ))}
-    </ul>
-  );
-}
+        const handleChange = (e) => {
+          setChannelName(e.target.value)
+        }
+        const addChannel = (channel) => {
+          setChannels([...channels, channel])
+        }
+        const handleClickOpen = () => {
+          setChannelName('')
+          setInputValueUser([])
+          setOpen(true);
+          console.log(currentUser)
+        };
+        const handleClose = () => {
+          setOpen(false);
+        };
+        const handleCloseSuccess = (event, reason) => {
+          setOpenSuccess(false)
+          if (reason === 'clickaway') {
+            return;
+          }
+
+          setOpen(false);
+        };
+        const naviate = useNavigate();
+        useEffect( () => {
+          const fetch = async () => {
+            try{
+              const {data: channels} = await axios.get('http://localhost:3001/channels', {
+                headers: {
+                  'Authorization': `Bearer ${oauth.access_token}`
+                }
+                ,
+                params: {
+                  connectedUser: `${oauth.email}` }})
+                  setChannels(channels)
+                }catch(err){
+                  console.error(err)
+                }
+              }
+              fetch()
+            }, [oauth, setChannels])
+            return (
+              <ul css={styles.root}>
+              <li css={styles.channel}>
+              <Link to="/channels" component={RouterLink}>
+              <Button startIcon={<HomeIcon />} variant="contained"
+              sx={{
+                paddingLeft: 2,
+                flexDirection: "line",
+                display: "flex",
+                justifyContent: "left",
+                width: 199,
+                height: 40,
+                color: "black",
+                borderRadius: 0,
+                backgroundColor: "#ffae00",
+                "&:hover": {
+                  background: "#e09808"}
+                }}
+                > Welcome
+                </Button>
+                </Link>
+                <div css={styles.titleContainer}>
+                <h3 css={styles.title}> Channels </h3>
+                <div>
+                <Tooltip title="Create channel">
+                <IconButton
+                onClick={handleClickOpen}
+                css={styles.addButton}>
+                <AddCircleIcon fontSize="inherit"/>
+                </IconButton>
+                </Tooltip>
+                <Stack>
+                <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Create a new channel</DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                To create a new channel, please enter its name and members.
+                Then send or cancel the form by clicking on the
+                corresponding button.
+                </DialogContentText>
+                <TextField
+                margin="dense"
+                id="name"
+                label="Channel name"
+                fullWidth
+                variant="standard"
+                required
+                value={channelName}
+                onChange={handleChange}
+                />
+                <Stack spacing={3} sx={{ width: 400 }}>
+                <Autocomplete
+                multiple
+                fullWidth
+                disablePortal
+                id="combo-box-users"
+                options={usersListDb}
+                renderInput={(params) => <TextField {...params}
+                variant="standard"
+                label="User emails"/>}
+                value={inputValueUser}
+                onChange={(event, inputValueUser) => {
+                  setInputValueUser(inputValueUser);
+                }}
+                />
+                </Stack>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={onSubmit}>Send</Button>
+                </DialogActions>
+                </Dialog>
+                <Snackbar open={openSuccess} autoHideDuration={3000} onClose={handleCloseSuccess}>
+                <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '100%' }}>
+                Channel successfully created !
+                </Alert>
+                </Snackbar>
+                </Stack>
+                </div>
+                </div>
+                </li>
+                { channels.map( (channel, i) => (
+                  <li key={i} css={styles.channel_button}>
+                  <Button
+                  sx={{
+                    paddingLeft: 2,
+                    flexDirection: "line",
+                    display: "flex",
+                    justifyContent: "left",
+                    width: 199,
+                    height: 40,
+                    color: "black",
+                    borderRadius: 0,
+                    backgroundColor: "#ffae00",
+                    "&:hover": {
+                      background: "#e09808"}
+                    }}
+                    href={`/channels/${channel.id}`}
+                    onClick={ (e) => {
+                      console.log(channel.usersList);
+                      e.preventDefault()
+                      naviate(`/channels/${channel.id}`)
+                    }}
+                    >
+                    {channel.name}
+                    </Button>
+                    </li>
+                  ))}
+                  </ul>
+                );
+              }

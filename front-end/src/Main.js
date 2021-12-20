@@ -45,23 +45,23 @@ export default function Main() {
   const isDrawerVisible = alwaysOpen || drawerVisible
   return (
     <main css={styles.root}>
-      <Drawer
-        PaperProps={{
-          style: { backgroundColor: "#ffae00", position: 'relative' } }}
-        BackdropProps={{ style: { position: 'relative' } }}
-        ModalProps={{
-          style: { position: 'relative' }
-        }}
-        variant="persistent"
-        open={isDrawerVisible}
-        css={[styles.drawer, isDrawerVisible && styles.drawerVisible]}
+    <Drawer
+    PaperProps={{
+      style: { backgroundColor: "#ffae00", position: 'relative' } }}
+      BackdropProps={{ style: { position: 'relative' } }}
+      ModalProps={{
+        style: { position: 'relative' }
+      }}
+      variant="persistent"
+      open={isDrawerVisible}
+      css={[styles.drawer, isDrawerVisible && styles.drawerVisible]}
       >
-        <Channels />
+      <Channels />
       </Drawer>
       <Routes>
-        <Route path=":id" element={<Channel />}/>
-        <Route path="*" element={<Welcome />}/>
+      <Route path=":id" element={<Channel />}/>
+      <Route path="*" element={<Welcome />}/>
       </Routes>
-    </main>
-  );
-}
+      </main>
+    );
+  }

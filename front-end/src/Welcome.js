@@ -28,38 +28,38 @@ export default function Welcome() {
   const styles = useStyles(useTheme())
   return (
     <div css={styles.root}>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={5}
-      >
-        <Grid item xs>
-          <div css={styles.card}>
-            <ChannelIcon css={styles.icon} />
-            <Typography color="black">
-              Create channels
-            </Typography>
-          </div>
-        </Grid>
-        <Grid item xs>
-          <div css={styles.card}>
-            <FriendsIcon css={styles.icon} />
-            <Typography color="black">
-              Invite friends
-            </Typography>
-          </div>
-        </Grid>
-        <Grid item xs>
-          <div css={styles.card}>
-            <SettingsIcon css={styles.icon} />
-            <Typography color="black">
-              Settings
-            </Typography>
-          </div>
-        </Grid>
-      </Grid>
+    <Grid
+    container
+    direction="row"
+    justify="center"
+    alignItems="center"
+    spacing={5}
+    >
+    <Grid item xs>
+    <div css={styles.card}>
+    <ChannelIcon css={styles.icon} />
+    <Typography color="black">
+    Create channels
+    </Typography>
+    </div>
+    </Grid>
+    <Grid item xs>
+    <div css={styles.card}>
+    <FriendsIcon css={styles.icon} />
+    <Typography color="black">
+    Invite friends
+    </Typography>
+    </div>
+    </Grid>
+    <Grid item xs>
+    <div css={styles.card}>
+    <SettingsIcon css={styles.icon} />
+    <Typography color="black">
+    Settings
+    </Typography>
+    </div>
+    </Grid>
+    </Grid>
     </div>
   );
 }

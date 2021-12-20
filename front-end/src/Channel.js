@@ -90,23 +90,23 @@ export default function Channel() {
   }
   return (
     <div css={styles.root}>
-      <List
-        channel={channel}
-        messages={messages}
-        onScrollDown={onScrollDown}
-        ref={listRef}
-        deleteMessage={deleteMessage}
-        updateMessage={updateMessage}
-      />
-      <Form addMessage={addMessage} channel={channel} />
-      <Fab
-        color="primary"
-        aria-label="Latest messages"
-        css={[styles.fab, scrollDown || styles.fabDisabled]}
-        onClick={onClickScroll}
-      >
-        <ArrowDropDownIcon />
-      </Fab>
+    <List
+    channel={channel}
+    messages={messages}
+    onScrollDown={onScrollDown}
+    ref={listRef}
+    deleteMessage={deleteMessage}
+    updateMessage={updateMessage}
+    />
+    <Form addMessage={addMessage} channel={channel} />
+    <Fab
+    // color="primary"
+    aria-label="Latest messages"
+    css={[styles.fab, scrollDown || styles.fabDisabled]}
+    onClick={onClickScroll}
+    >
+    <ArrowDropDownIcon />
+    </Fab>
     </div>
   );
 }
