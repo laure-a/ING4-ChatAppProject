@@ -197,6 +197,23 @@ function valuetext(value) {
       </Tooltip>
       <Dialog open={openSettings} onClose={closeSettings}>
        <DialogTitle>Account settings</DialogTitle>
+       <DialogContent css={{flexDirection: "column", display: "flex"}}>
+       <FormControlLabel
+        control={<IOSSwitch sx={{ m: 1 }} defaultUnchecked />}
+        label="Night mode"
+      />
+      <FormControl component="fieldset">
+      <FormLabel css={{paddingTop: 20, paddingBottom: 5}} component="legend">Language</FormLabel>
+      <RadioGroup
+        aria-label="language"
+        defaultValue="English"
+        name="radio-buttons-group">
+        <FormControlLabel value="english" control={<Radio />} label="English" />
+        <FormControlLabel value="french" control={<Radio />} label="Français" />
+        <FormControlLabel value="chinese" control={<Radio />} label="中文" />
+      </RadioGroup>
+    </FormControl>
+    <Box sx={{ width: 300 }}>
       <FormLabel css={{paddingTop: 20, paddingBottom: 5}} component="legend">Font size</FormLabel>
      <Slider
        aria-label="Fontsize"
@@ -211,6 +228,12 @@ function valuetext(value) {
    </Box>
        </DialogContent>
        <DialogActions>
+         <Button sx={{
+           borderColor:red[800],
+           color:red[800],
+           "&:hover": {borderColor: grey[200], background: grey[200] }}}
+          variant="outlined"
+          onClick={closeSettings}>Cancel changes</Button>
        </DialogActions>
      </Dialog>
       <Tooltip title="Logout">
