@@ -195,7 +195,7 @@ const scroll = () => {
   const handleCloseDelete = () => {
     setOpenDelete(false);
   };
-  
+
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
     setNewMessage(null);
@@ -204,14 +204,6 @@ const scroll = () => {
   const handleChangeUpdate = (e) => {
     setNewMessage(e.target.value)
   }
-
-  const rootEl = useRef(null)
-  const scrollEl = useRef(null)
-  const scroll = () => {
-    scrollEl.current.scrollIntoView()
-  }
-  // See https://dev.to/n8tb1t/tracking-scroll-position-with-react-hooks-3bbj
-  const throttleTimeout = useRef(null) // react-hooks/exhaustive-deps
   
   const handleCloseUser = () => {
     setInputValueUser([])
