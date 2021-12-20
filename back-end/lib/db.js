@@ -101,7 +101,10 @@ module.exports = {
     create: async (user) => {
       if(!user.username) throw Error('Invalid user')
       const id = uuid()
-      await db.put(`users:${id}`, JSON.stringify(user))
+      
+      await db.put(`users:${id}`, JSON.stringify(user)
+      )
+
       return merge(user, {id: id})
     },
     get: async (id) => {

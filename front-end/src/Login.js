@@ -14,6 +14,7 @@ import Context from './Context'
 import {
   useNavigate
 } from "react-router-dom";
+import { useThemeProps } from '@mui/system';
 
 const base64URLEncode = (str) => {
   return str.toString('base64')
@@ -131,8 +132,6 @@ const LoadToken = ({
   removeCookie,
   setOauth
 }) => {
-  const avatChoice = 0
-  const uploadAvat = 0
   const {oauth, currentUser, setCurrentUser}= useContext(Context)
   const styles = useStyles(useTheme())
   const navigate = useNavigate();
@@ -156,8 +155,12 @@ const LoadToken = ({
               'Authorization': `Bearer ${data.access_token}`
             }
           })
+          console.log(users)
           let found = false
           for (let i=0; i<users.length; i++){
+            console.log(users[i].username);
+            console.log(data.email);
+
             if(users[i].username === data.email){
               found=true
               setCurrentUser(users[i])
@@ -166,7 +169,10 @@ const LoadToken = ({
           if(!found)
           {
             const newUser = await axios.post(`http://localhost:3001/users`,
-              { username : data.email, avatChoice, uploadAvat},
+              { username : data.email,
+                 avatChoice: 0,
+                  uploadAvat: 0,
+                },
               { headers: {
                 'Authorization': `Bearer ${data.access_token}`
               }
