@@ -116,7 +116,7 @@ Application development
   In the code, the component was used in "header.js" line 61 to display the user's gravatar image or a default one if the connected user's email is not linked to a gravatar profile. 
   
 * Avatar selection   
-  For this task, we had to change Login.js, Header.js, Context.js in the front-end and app.js and db.js in the back-end. We decided to upload four different avatars and to offer the possibility for the user to choose either of them or his gravatar (which is put by default as his avatar displayed) in the settings. We decided to put one button for each avatar in the selection. When we click on one of them, the number of the choice is stored in the database and the front-end is uploaded immediately. With this, we can display the good avatar when a user logs in thanks to his attribute choice. We recognize the good user as we put a setCurrentUser function in Context.js. 
+  For this task, we had to change Login.js, Header.js, Context.js in the front-end and app.js and db.js in the back-end. We decided to upload four different avatars and to offer the possibility for the user to choose either of them or his gravatar (which is put by default as his avatar displayed) next to the settings. We decided to put one button for each avatar in the selection. When we click on one of them, the number of the choice is stored in the database and the front-end is uploaded immediately. With this, we can display the good avatar when a user logs in thanks to his attribute choice. We recognize the good user as we put a setCurrentUser function in Context.js. 
   
   Mark: 4/4
   
